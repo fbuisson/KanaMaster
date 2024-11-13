@@ -3,6 +3,8 @@
 		"prettier": "^3.3.3"
 	},
 	"scripts": {
-		"format": "prettier --write ."
+		"dev:client": "pnpm --filter kanamaster-client dev",
+		"dev:server": "pnpm --filter kanamaster-server dev",
+		"dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\""
 	}
 }
