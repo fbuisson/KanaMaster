@@ -9,11 +9,9 @@ connectDB();
 
 const app = express();
 
-// Middleware pour interpréter le JSON
 app.use(express.json());
 
 app.use(cookieParser());
-// Assure-toi que cette ligne est bien présente pour enregistrer les routes utilisateur
 app.use("/api",routes);
 
 console.log("Port: ", process.env.PORT);

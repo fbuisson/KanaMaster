@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import User from '../models/User';
+import User from '../models/user';
 import jwt from 'jsonwebtoken';
 import { APIResponse } from '../utils/response'; // Import de la fonction utilitaire
 
