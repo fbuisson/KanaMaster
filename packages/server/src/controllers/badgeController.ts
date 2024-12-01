@@ -28,16 +28,19 @@ export const getAllBadges = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteBadge = async (req: Request, res: Response) => {
+export const deleteBadge = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
 
     const badge = await Badge.findByIdAndDelete(id);
-    if (!badge) return APIResponse(res, null, 'Badge introuvable', 404);
+    if (!badge) {
+      APIResponse(res, null, 'Badge introuvable', 404);
+      return;
+    }
 
-    return APIResponse(res, null, 'Badge supprimé avec succès', 200);
+    APIResponse(res, null, 'Badge supprimé avec succès', 200);
   } catch (error) {
     console.error(error);
-    return APIResponse(res, null, 'Erreur serveur', 500);
+    APIResponse(res, null, 'Erreur serveur', 500);
   }
 };

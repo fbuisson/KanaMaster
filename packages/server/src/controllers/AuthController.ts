@@ -50,11 +50,11 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Génère les tokens JWT
-    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'secret', {
+    const accessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', {
       expiresIn: '15m', // Durée de vie du token d'accès
     });
 
-    const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET || 'refreshSecret', {
+    const refreshToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_REFRESH_SECRET || 'refreshSecret', {
       expiresIn: '7d', // Durée de vie du token de rafraîchissement
     });
 

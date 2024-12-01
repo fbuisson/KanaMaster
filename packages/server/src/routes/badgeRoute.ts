@@ -8,16 +8,19 @@ import {
   assignBadgeToUser,
   getUserBadges,
 } from '../controllers/UserBadgeController';
+import { authMiddleware } from '../middlewares/authMiddleware';
+import { adminMiddleware } from '../middlewares/adminMiddelware';
+import { accessControlMiddleware } from '../middlewares/accessControlMiddleware';
 
 const router = Router();
 
 // Routes générales pour les badges
-router.get('/', getAllBadges);
-router.post('/', createBadge);
-router.delete('/:id', deleteBadge);
+router.get('/', authMiddleware, adminMiddleware, getAllBadges);
+router.post('/', authMiddleware, adminMiddleware, createBadge);
+router.delete('/:id', authMiddleware, adminMiddleware, deleteBadge);
 
 // Routes spécifiques aux utilisateurs
-router.post('/user', assignBadgeToUser);
-router.get('/user/:userId', getUserBadges);
+router.post('/user', authMiddleware, assignBadgeToUser);
+router.get('/user/:userId', authMiddleware, accessControlMiddleware, getUserBadges);
 
 export default router;

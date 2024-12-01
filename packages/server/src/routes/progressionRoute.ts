@@ -3,7 +3,7 @@ import {
   getProgression,
   updateProgression,
   getProgressionByKana,
-} from '../controllers/progressionController';
+} from '../controllers/ProgressionController';
 
 const router = Router();
 

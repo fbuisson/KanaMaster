@@ -2,6 +2,7 @@ import { Router } from "express";
 import authRoutes from "./authRoute";
 import kanaRoutes from "./kanaRoute";
 import badgeRoutes from "./badgeRoute";
+import progressionRoutes from "./progressionRoute";
 
 const router = Router();
 
@@ -9,5 +10,6 @@ const router = Router();
 router.use("/auth", authRoutes);
 router.use("/kana", kanaRoutes);
 router.use("/badge", badgeRoutes);
+router.use("/progression", progressionRoutes);
 
 export default router;
