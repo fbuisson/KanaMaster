@@ -3,11 +3,11 @@ import {
   getAllBadges,
   createBadge,
   deleteBadge,
-} from '../controllers/badgeController';
+} from '../controllers/BadgeController';
 import {
   assignBadgeToUser,
   getUserBadges,
-} from '../controllers/badgeUserController';
+} from '../controllers/UserBadgeController';
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 // src/controllers/kanaController.ts
 import { Request, Response } from 'express';
-import Kana from '../models/kana';
+import Kana from '../models/Kana';
 import { APIResponse } from '../utils/response';
 
 // Créer un nouveau kana

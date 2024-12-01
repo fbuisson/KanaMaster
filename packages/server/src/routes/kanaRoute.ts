@@ -6,7 +6,7 @@ import {
   getKanaById,
   updateKana,
   deleteKana,
-} from '../controllers/kanaController';
+} from '../controllers/KanaController';
 
 const router = Router();
 

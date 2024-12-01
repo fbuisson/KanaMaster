@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserBadge from '../models/badgeUser';
+import UserBadge from '../models/UserBadge';
 import { APIResponse } from '../utils/response';
 
 export const assignBadgeToUser = async (req: Request, res: Response) => {

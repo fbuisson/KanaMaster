@@ -1,6 +1,6 @@
 // src/controllers/badgeController.ts
 import { Request, Response } from 'express';
-import Badge from '../models/badge';
+import Badge from '../models/Badge';
 import { APIResponse } from '../utils/response';
 
 // Créer un nouveau badge
