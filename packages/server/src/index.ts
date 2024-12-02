@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
 import routes from './routes/index';
@@ -8,6 +9,11 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Autorise uniquement les requêtes depuis ce domaine
+  credentials: true, // Permet d'envoyer les cookies avec les requêtes
+}));
 
 app.use(express.json());
 

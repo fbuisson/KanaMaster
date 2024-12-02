@@ -1,10 +1,15 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request as ExpressRequest, Response, NextFunction } from 'express';
+import { IUser } from '../models/User';
 
-export const accessControlMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  const user = req.user as { id: string; role: string };
+interface RequestWithUser extends ExpressRequest {
+  user?: IUser;
+}
+
+export const accessControlMiddleware = (req: RequestWithUser, res: Response, next: NextFunction): void => {
+  const user = req.user;
   const { userId } = req.params;
 
-  if (user.role === 'admin' || user.id === userId) {
+  if (user && (user.role === 'admin' || user.id === userId)) {
     next();
   } else {
     res.status(403).json({ message: 'Accès interdit : vous ne pouvez accéder qu\'à vos propres données' });
