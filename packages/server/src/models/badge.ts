@@ -1,11 +1,12 @@
 import { Schema, model, Document } from 'mongoose';
+import { CharacterType } from './Character';
 
 export interface IBadge extends Document {
   title: string;
   description: string;
   media_url: string;
   requirements: {
-    type: string;
+    type: CharacterType | 'all';
     threshold: number;
   };
 }
@@ -15,7 +16,7 @@ const BadgeSchema = new Schema<IBadge>({
   description: { type: String, required: true, maxlength: 255 },
   media_url: { type: String, required: true, maxlength: 255 },
   requirements: {
-    type: { type: String, required: true },
+    type: { type: String, required: true, enum: ['hiragana', 'katakana', 'kanji'] },
     threshold: { type: Number, required: true },
   },
 });

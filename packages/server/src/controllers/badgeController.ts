@@ -6,8 +6,8 @@ import { APIResponse } from '../utils/response';
 // Créer un nouveau badge
 export const createBadge = async (req: Request, res: Response) => {
   try {
-    const { title, description, media_url } = req.body;
-    const newBadge = new Badge({ title, description, media_url });
+    const { title, description, media_url, requirements } = req.body;
+    const newBadge = new Badge({ title, description, media_url, requirements });
     await newBadge.save();
 
     return APIResponse(res, newBadge, 'Badge créé avec succès', 201);

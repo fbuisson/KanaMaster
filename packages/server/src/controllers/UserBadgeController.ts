@@ -1,21 +1,43 @@
 import { Request, Response } from 'express';
 import UserBadge from '../models/UserBadge';
+import Badge from '../models/Badge';
+import Progression, { IProgression } from '../models/Progression';
 import { APIResponse } from '../utils/response';
 
 export const assignBadgeToUser = async (req: Request, res: Response) => {
   try {
-    const { user_id, badge_id } = req.body;
+    const { user_id } = req.body;
+    const progressionDoc = await Progression.findOne({ user_id });
 
-    // Vérifie si l'utilisateur a déjà le badge
-    const existing = await UserBadge.findOne({ user_id, badge_id });
-    if (existing) {
-      return APIResponse(res, null, 'Badge déjà attribué à l\'utilisateur', 400);
+    if (!progressionDoc) {
+      return APIResponse(res, null, 'Progression utilisateur introuvable', 404);
     }
 
-    const userBadge = new UserBadge({ user_id, badge_id });
-    await userBadge.save();
+    const userProgression = progressionDoc.toObject() as IProgression;
+    const badges = await Badge.find();
 
-    return APIResponse(res, userBadge, 'Badge attribué avec succès', 201);
+    for (const badge of badges) {
+      const { type, threshold } = badge.requirements;
+
+      let meetsRequirements = false;
+
+      if (type === 'all') {
+        const totalProgression = Object.values(userProgression).reduce((sum, value) => sum + value, 0);
+        meetsRequirements = totalProgression >= threshold;
+      } else {
+        meetsRequirements = userProgression[type as keyof IProgression] >= threshold;
+      }
+
+      if (meetsRequirements) {
+        const existing = await UserBadge.findOne({ user_id, badge_id: badge._id });
+        if (!existing) {
+          const userBadge = new UserBadge({ user_id, badge_id: badge._id });
+          await userBadge.save();
+        }
+      }
+    }
+
+    return APIResponse(res, null, 'Badges vérifiés et attribués si nécessaire', 200);
   } catch (error) {
     console.error(error);
     return APIResponse(res, null, 'Erreur serveur', 500);
