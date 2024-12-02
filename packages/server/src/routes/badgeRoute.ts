@@ -3,7 +3,7 @@ import {
   getAllBadges,
   createBadge,
   deleteBadge,
-} from '../controllers/BadgeController';
+} from '../controllers/badgeController';
 import {
   assignBadgeToUser,
   getUserBadges,
