@@ -18,6 +18,7 @@ const CharacterSchema = new Schema<ICharacter>({
   type: { type: String, required: true, enum: ['hiragana', 'katakana'] },
   vowel: { type: String, required: true, enum: ['a', 'i', 'u', 'e', 'o'], maxlength: 1 },
   consonant: { type: String, enum: ['-', 'k', 'g', 's', 'z', 't', 'd', 'n', 'h', 'b', 'p', 'm', 'y', 'r', 'w'], maxlength: 1 },
+  japanese_pronunciation: { type: String, maxlength: 255 },
   translation: { type: String, maxlength: 255 },
   media_url: { type: String, maxlength: 255 },
 });
