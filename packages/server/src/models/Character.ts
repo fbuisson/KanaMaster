@@ -1,17 +1,17 @@
 // src/models/Kana.ts
 import { Schema, model, Document } from 'mongoose';
 
-export type KanaType = 'hiragana' | 'katakana';
+export type CharacterType = 'hiragana' | 'katakana' | 'kanji';
 
-export interface IKana extends Document {
+export interface ICharacter extends Document {
   symbol: string;
-  type: KanaType;
+  type: CharacterType;
   vowel: 'a' | 'i' | 'u' | 'e' | 'o';
   consonant: '-' | 'k' | 'g' | 's' | 'z' | 't' | 'd' | 'n' | 'h' | 'b' | 'p' | 'm' | 'y' | 'r' | 'w';
   media_url?: string;
 }
 
-const KanaSchema = new Schema<IKana>({
+const CharacterSchema = new Schema<ICharacter>({
   symbol: { type: String, required: true, maxlength: 10 },
   type: { type: String, required: true, enum: ['hiragana', 'katakana'] },
   vowel: { type: String, required: true, enum: ['a', 'i', 'u', 'e', 'o'], maxlength: 1 },
@@ -19,4 +19,4 @@ const KanaSchema = new Schema<IKana>({
   media_url: { type: String, maxlength: 255 },
 });
 
-export default model<IKana>('Kana', KanaSchema);
+export default model<ICharacter>('Character', CharacterSchema);
