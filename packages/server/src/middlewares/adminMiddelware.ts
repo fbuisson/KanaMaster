@@ -1,22 +1,31 @@
-import { Request as ExpressRequest, Response, NextFunction } from 'express';
-import { IUser } from '../models/User';
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken'
+import { APIResponse } from '../utils/response';
+import User from '../models/User';
 
-interface RequestWithUser extends ExpressRequest {
-  user?: IUser;
-}
+export const adminMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const token = req.header('Authorization')?.split(' ')[1];
 
-export const adminMiddleware = (req: RequestWithUser, res: Response, next: NextFunction): void => {
-  if (!req.user) {
-    res.status(401).json({ message: 'Non autorisé : utilisateur non connecté' });
-    return;
-  }
-  
-  const user = req.user;
-
-  if (user.role !== 'admin') {
-    res.status(403).json({ message: 'Accès interdit : rôle insuffisant' });
+  if (!token) {
+    APIResponse(res, null, 'Non autorisé : token manquant', 401);
     return;
   }
 
-  next();
+  try {
+    // Vérifie et décode le token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || '') as jwt.JwtPayload;
+
+    // Récupère l'utilisateur complet depuis la base de données
+    const user = await User.findById(decoded.id).select('-password');
+    if (!user) {
+      APIResponse(res, null, 'Utilisateur non trouvé', 404);
+      return;
+    } else if (user.role !== 'admin') {
+        APIResponse(res, null, 'Accès interdit : rôle insuffisant', 403);
+        return;
+    } else next();
+  } catch (error) {
+    console.error('Erreur JWT:', error);
+    APIResponse(res, null, 'Token invalide, accès refusé', 401);
+  }
 };

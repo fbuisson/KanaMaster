@@ -1,23 +1,28 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { APIResponse } from '../utils/response';
+import User from '../models/User';
 
-
-export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  // Récupère le token depuis les en-têtes (Authorization) ou les cookies
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
-    res.status(401).json({ message: 'Non autorisé : token manquant' });
+    APIResponse(res, null, 'Non autorisé : token manquant', 401);
     return;
   }
 
   try {
     // Vérifie et décode le token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || '');
-    (req as any).user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || '') as jwt.JwtPayload;
 
-    next(); // Passe au middleware ou contrôleur suivant
+    // Récupère l'utilisateur complet depuis la base de données
+    const user = await User.findById(decoded.id).select('-password'); // On exclut le mot de passe
+    if (!user) {
+      APIResponse(res, null, 'Utilisateur non trouvé', 404);
+      return;
+    } else next();
   } catch (error) {
-    res.status(401).json({ message: 'Token invalide, accès refusé' });
+    console.error('Erreur JWT:', error);
+    APIResponse(res, null, 'Token invalide, accès refusé', 401);
   }
 };
