@@ -1,9 +1,12 @@
 "use client";
 
 import Button from "@/components/UI/Button";
+import { useAuth } from "@/contexts/AuthContext";
 import styled from "styled-components";
 
 export default function Home() {
+  const { isLoggedIn } = useAuth();
+
   return (
     <main>
       <S.Hero>
@@ -42,6 +45,11 @@ export default function Home() {
             <p style={{ width: "380px" }}>Gagne des badges en récompense de tes efforts.</p>
           </S.Column>
         </S.Flexcontainer>
+        <div className="spaces-block banner">
+          <h2>Prêt à maîtriser les hiraganas et les katakanas ?</h2>
+          <p>Rejoignez KanaMaster dès aujourd'hui et commencez votre voyage d'apprentissage !</p>
+          <Button size="xl" link={isLoggedIn ? "/profile" : "/register"}>Commencer</Button>
+        </div>
       </div>
     </main>
   );

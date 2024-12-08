@@ -1,3 +1,5 @@
+@import 'mixins';
+
 // Variables SCSS
 $background: #FFEED0;
 $primary: #2C3639;
@@ -75,4 +77,38 @@ h3 {
 
 .spaces-block {
   margin-top: 4rem;
+}
+
+.banner {
+  @include center-block();
+  @include flex-center(2rem, center, center, column);
+  position: relative;
+  text-align: center;
+  padding: 2rem 4rem;
+  max-width: 1200px;
+  width: 90%;
+  background-color: $primary;
+  color: $secondary;
+  border-radius: 80px;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background-image: url("/seigaiha.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    bottom: 0;
+    right: 0;
+    width: 60%;
+    height: 60%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .banner {
+    display: none;
+  }
 }
