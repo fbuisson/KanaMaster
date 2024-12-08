@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response) => {
     });
 
     // Réponse de succès
-    return APIResponse(res, null, 'Vous êtes connecté', 200);
+    return APIResponse(res, {userId: user._id}, 'Vous êtes connecté', 200);
   } catch (err) {
     console.error(err);
     return APIResponse(res, null, 'Erreur serveur', 500);
@@ -101,6 +101,42 @@ export const logout = (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return APIResponse(res, null, 'Erreur lors de la déconnexion', 500);
+  }
+};
+
+export const refreshAccessToken = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+      return APIResponse(res, null, 'Refresh token manquant', 401);
+    }
+
+    // Vérifie et décode le refresh token
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || 'refreshSecret') as jwt.JwtPayload;
+
+    // Vérifie si l'utilisateur existe
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return APIResponse(res, null, 'Utilisateur non trouvé', 404);
+    }
+
+    // Génère un nouveau token d'accès
+    const newAccessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', {
+      expiresIn: '15m',
+    });
+
+    // Définit le cookie pour le nouveau token d'accès
+    res.cookie('accessToken', newAccessToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: NODE_ENV === 'production',
+      maxAge: 15 * 60 * 1000, // 15 minutes en millisecondes
+    });
+
+    return APIResponse(res, { accessToken: newAccessToken }, 'Nouveau token d\'accès généré', 200);
+  } catch (error) {
+    console.error('Erreur lors du rafraîchissement du token:', error);
+    return APIResponse(res, null, 'Token invalide ou expiré', 401);
   }
 };
 

@@ -1,6 +1,10 @@
 :root {
   --background: #FFEED0;
-  --foreground: #2C3639;
+  --primary: #2C3639;
+  --primary-hover: #47575C;
+  --secondary: #FFEED0;
+  --text: #333333;
+  --button-background: #E33C3B;
 }
 
 html,
@@ -10,7 +14,7 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: var(--primary);
   background: var(--background);
   max-width: 2000px;
   margin: 0 auto;
@@ -31,12 +35,17 @@ a {
 }
 
 a:hover {
-  color: var(--primaryHover);
+  color: var(--primary-hover);
 }
 
 p {
   font-size: 1rem;
   font-weight: 300;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 900;
 }
 
 h2 {
@@ -49,6 +58,16 @@ h3 {
   font-size: 1.4rem;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.display-1 {
+  font-size: 6rem;
+  font-weight: 900;
+}
+
+.display-text {
+  font-size: 1.8rem;
+  font-weight: 300;
 }
 
 .spaces-block {

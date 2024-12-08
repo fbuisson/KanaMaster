@@ -4,7 +4,7 @@ import { APIResponse } from '../utils/response';
 import User from '../models/User';
 
 export const adminMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token = req.cookies.accessToken;
 
   if (!token) {
     APIResponse(res, null, 'Non autorisé : token manquant', 401);

@@ -4,19 +4,19 @@ import { APIResponse } from '../utils/response';
 import User from '../models/User';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  console.log("token");
+  const token = req.cookies.accessToken;
 
+  console.log(token);
   if (!token) {
     APIResponse(res, null, 'Non autorisé : token manquant', 401);
     return;
   }
 
   try {
-    // Vérifie et décode le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET || '') as jwt.JwtPayload;
 
-    // Récupère l'utilisateur complet depuis la base de données
-    const user = await User.findById(decoded.id).select('-password'); // On exclut le mot de passe
+    const user = await User.findById(decoded.id).select('-password');
     if (!user) {
       APIResponse(res, null, 'Utilisateur non trouvé', 404);
       return;

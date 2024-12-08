@@ -10,6 +10,7 @@ interface props {
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  type?: "button" | "submit" | "reset";
 }
 
 export default function Button({
@@ -18,6 +19,7 @@ export default function Button({
   onClick,
   disabled = false,
   style,
+  type = "button",
 }: props) {
   return (
     <S.Button
@@ -25,6 +27,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       style={style}
+      type={type}
     >
       {children}
     </S.Button>

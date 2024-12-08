@@ -3,8 +3,27 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Button from "../UI/Button";
+import { useEffect, useState } from "react";
+import { apiClient } from "../../utils/apiClient";
 
 export default function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    setIsLoggedIn(!!userId);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await apiClient.post("/auth/logout");
+      localStorage.clear();
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+    }
+  };
+
   return (
     <Nav>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -22,12 +41,18 @@ export default function Navbar() {
         </Link>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <Link href="/inscription">
-          Inscription
-        </Link>
-        <Button>
-          Connexion
-        </Button>
+        {isLoggedIn ? (
+          <Button onClick={handleLogout}>Logout</Button>
+        ) : (
+          <>
+            <Link href="/inscription">
+              Inscription
+            </Link>
+            <Button>
+              <Link href="/connexion">Connexion</Link>
+            </Button>
+          </>
+        )}
       </div>
     </Nav>
   );

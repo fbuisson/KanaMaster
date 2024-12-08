@@ -1,25 +1,9 @@
 "use client";
 
 import Button from "@/components/UI/Button";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
 export default function Home() {
-  const [apiResponse, setApiResponse] = useState<{data: number, message: string} | null>(null);
-
-  useEffect(() => {
-    fetch(`${apiUrl}/api/check`)
-      .then((response) => response.json())
-      .then((data) => setApiResponse(data))
-      .catch((error) => console.error("Error fetching API:", error));
-  }, []);
-
-  useEffect(() => {
-    console.log(apiResponse);
-  }, [apiResponse]);
-
   return (
     <main>
       <S.Hero>
@@ -27,9 +11,9 @@ export default function Home() {
       </S.Column>
       <S.Column>
         <div>
-          <p>カナマスター</p>
-          <h1>KanaMaster</h1>
-          <p>Apprends à lire les kanas</p>
+          <h1 style={{ display: "flex", flexDirection: "column" }}>カナマスター<span className="display-1" style={{ marginTop: "-35px" }}>KanaMaster</span></h1>
+          <p className="display-text">Apprends à lire les kanas</p>
+          <p className="display-text">かなを読むことを学ぶ</p>
           <Button size="xl" style={{ marginTop: "2rem" }}>Commencer</Button>
         </div>
         </S.Column>

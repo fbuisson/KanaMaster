@@ -3,7 +3,7 @@ import { APIResponse } from '../utils/response';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 export const accessControlMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token = req.cookies.accessToken;
   const { userId } = req.params;
 
   if (!token) {
@@ -12,10 +12,8 @@ export const accessControlMiddleware = async (req: Request, res: Response, next:
   }
 
   try {
-    // Vérifie et décode le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET || '') as jwt.JwtPayload;
 
-    // Récupère l'utilisateur complet depuis la base de données
     const user = await User.findById(decoded.id).select('-password');
     if (!user) {
       APIResponse(res, null, 'Utilisateur non trouvé', 404);
