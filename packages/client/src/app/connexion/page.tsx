@@ -5,10 +5,13 @@ import Button from "@/components/UI/Button";
 import styled from "styled-components";
 import { apiClient } from "@/utils/apiClient";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
-  const router = useRouter();
+  const { setIsLoggedIn } = useAuth();
 
+  const router = useRouter();
+  
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: "",
@@ -64,11 +67,10 @@ export default function Login() {
         const response = await apiClient.post("/auth/login", formData);
         if(response.status === 200 && response.data) {
           const { userId } = response.data.data;
-          console.log(response);
-          console.log(userId);
           localStorage.setItem("userId", userId);
+          setIsLoggedIn(true);
           setSuccessMessage("Connexion réussie !");
-          // router.push("/");
+          router.push("/");
         }
       } catch (error) {
         console.error("Erreur lors de la connexion:", error);

@@ -3,6 +3,7 @@ import { Noto_Sans_JP } from "next/font/google";
 import "./globals.scss";
 import Navbar from "@/components/layout/Navbar";
 import ThemeWrapper from "@/components/layout/ThemeWrapper";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 
 const notoSansJP = Noto_Sans_JP({
@@ -25,10 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${notoSansJP.variable}`}>
-        <ThemeWrapper>
-          <Navbar />
-          {children}
-        </ThemeWrapper>
+        <AuthProvider>
+          <ThemeWrapper>
+            <Navbar />
+            {children}
+          </ThemeWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

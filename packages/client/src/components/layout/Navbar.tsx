@@ -5,20 +5,18 @@ import styled from "styled-components";
 import Button from "../UI/Button";
 import { useEffect, useState } from "react";
 import { apiClient } from "../../utils/apiClient";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    setIsLoggedIn(!!userId);
-  }, []);
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await apiClient.post("/auth/logout");
-      localStorage.clear();
-      setIsLoggedIn(false);
+      const response = await apiClient.post("/auth/logout");
+      if(response.status === 200) {
+        localStorage.clear();
+        setIsLoggedIn(false);
+      }
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
     }
