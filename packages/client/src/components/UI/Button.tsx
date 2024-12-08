@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React from "react";
 import styled from "styled-components";
 
@@ -7,6 +8,7 @@ interface props {
   size?: "m" | "l" | "xl";
   children: React.ReactNode;
   onClick?: () => void;
+  link?: string;
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -17,14 +19,22 @@ export default function Button({
   size = "m",
   children,
   onClick,
+  link,
   disabled = false,
   style,
   type = "button",
 }: props) {
+  const router = useRouter();
+
+  const handleClick = (): void => {
+    if (link) router.push(link);
+    else if (onClick) onClick();
+  };
+
   return (
     <S.Button
       size={size}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       style={style}
       type={type}
@@ -44,8 +54,8 @@ const S = {
     border: none;
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
     opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-    background-color: ${({ theme }) => theme.colors.button.background};
-    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.button.background}!important;
+    color: ${({ theme }) => theme.colors.secondary}!important;
     padding: ${({ size, theme }) => theme.sizes.button[size || "m"].padding};
     font-size: ${({ size, theme }) => theme.sizes.button[size || "m"].fontSize};
     box-shadow: 4px 3px 0px 0px #A42221;

@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../../uploads/profiles')); // Dossier pour les images de profil
   },
   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
-    const userId = (req.user as { id: string })?.id;
+    const userId = (req as any).user?.id;
     const timestamp = Date.now();
     const ext = path.extname(file.originalname);
     cb(null, `${userId}-${timestamp}${ext}`);

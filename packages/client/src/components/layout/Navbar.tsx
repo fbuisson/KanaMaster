@@ -3,7 +3,6 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Button from "../UI/Button";
-import { useEffect, useState } from "react";
 import { apiClient } from "../../utils/apiClient";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -40,15 +39,16 @@ export default function Navbar() {
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         {isLoggedIn ? (
-          <Button onClick={handleLogout}>Logout</Button>
+          <>
+            <Link href="/profil"></Link>
+            <Button onClick={handleLogout}>Se déconnecter</Button>
+          </>
         ) : (
           <>
             <Link href="/inscription">
               Inscription
             </Link>
-            <Button>
-              <Link href="/connexion">Connexion</Link>
-            </Button>
+            <Button link="/connexion">Connexion</Button>
           </>
         )}
       </div>
