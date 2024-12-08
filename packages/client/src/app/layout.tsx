@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Noto_Sans_JP } from "next/font/google";
-import "./globals.css";
+import "./globals.scss";
 import Navbar from "@/components/layout/Navbar";
 import ThemeWrapper from "@/components/layout/ThemeWrapper";
 
