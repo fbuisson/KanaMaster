@@ -1,45 +1,48 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import styled from "styled-components";
-import Button from "../UI/Button";
-import { apiClient } from "../../utils/apiClient";
-import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useState } from "react";
+import Link from 'next/link';
+import styled from 'styled-components';
+import Button from '../UI/Button';
+import { apiClient } from '../../utils/apiClient';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
 
 export default function Navbar() {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, role } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
-      const response = await apiClient.post("/auth/logout");
-      if(response.status === 200) {
+      const response = await apiClient.post('/auth/logout');
+      if (response.status === 200) {
         localStorage.clear();
         setIsLoggedIn(false);
         setMenuOpen(false);
       }
     } catch (error) {
-      console.error("Erreur lors de la déconnexion:", error);
+      console.error('Erreur lors de la déconnexion:', error);
     }
   };
 
   useEffect(() => {
     if (menuOpen) {
-      document.body.classList.add("no-scroll");
+      document.body.classList.add('no-scroll');
     } else {
-      document.body.classList.remove("no-scroll");
+      document.body.classList.remove('no-scroll');
     }
 
     return () => {
-      document.body.classList.remove("no-scroll");
+      document.body.classList.remove('no-scroll');
     };
   }, [menuOpen]);
 
   return (
     <S.Nav>
       <div className="flex align-center">
-        <Link href="/" style={{ display: "flex", alignItems: "center", marginRight: "1rem"}}>
+        <Link
+          href="/"
+          style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}
+        >
           <img src="/logo.svg" alt="Accueil" />
         </Link>
         <Link href="/" onClick={() => setMenuOpen(false)}>
@@ -53,14 +56,23 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex align-center">
-        <S.Hamburger onClick={() => setMenuOpen(!menuOpen)} >
-          <img style={{ width: "2rem", height: "2rem" }} src="/navbar/hamburger.svg" alt="Menu" />
+        <S.Hamburger onClick={() => setMenuOpen(!menuOpen)}>
+          <img
+            style={{ width: '2rem', height: '2rem' }}
+            src="/navbar/hamburger.svg"
+            alt="Menu"
+          />
         </S.Hamburger>
       </div>
       <S.NavLinks className="flex align-center">
-        {isLoggedIn ? (
+        {isLoggedIn && role ? (
           <>
-            <Link href="/profile" onClick={() => setMenuOpen(false)}>Mon profil</Link>
+            <Link
+              href={role === 'admin' ? '/admin/dashboard' : '/profile'}
+              onClick={() => setMenuOpen(false)}
+            >
+              {role === 'admin' ? 'Tableau de bord' : 'Mon profil'}
+            </Link>
             <Button onClick={handleLogout}>Se déconnecter</Button>
           </>
         ) : (
@@ -68,16 +80,24 @@ export default function Navbar() {
             <Link href="/register" onClick={() => setMenuOpen(false)}>
               Inscription
             </Link>
-            <Button link="/login" onClick={() => setMenuOpen(false)}>Connexion</Button>
+            <Button link="/login" onClick={() => setMenuOpen(false)}>
+              Connexion
+            </Button>
           </>
         )}
       </S.NavLinks>
       <S.Menu open={menuOpen}>
-        <Button onClick={() => setMenuOpen(false)} size="l">X</Button>
-        {isLoggedIn ? (
+        <Button onClick={() => setMenuOpen(false)} size="l">
+          X
+        </Button>
+        {isLoggedIn && role ? (
           <>
-            
-            <Link href="/profile" onClick={() => setMenuOpen(false)}>Mon profil</Link>
+            <Link
+              href={role === 'admin' ? '/admin/dashboard' : '/profile'}
+              onClick={() => setMenuOpen(false)}
+            >
+              {role === 'admin' ? 'Tableau de bord' : 'Mon profil'}
+            </Link>
             <Button onClick={handleLogout}>Se déconnecter</Button>
           </>
         ) : (
@@ -85,7 +105,9 @@ export default function Navbar() {
             <Link href="/register" onClick={() => setMenuOpen(false)}>
               Inscription
             </Link>
-            <Button link="/login" onClick={() => setMenuOpen(false)}>Connexion</Button>
+            <Button link="/login" onClick={() => setMenuOpen(false)}>
+              Connexion
+            </Button>
           </>
         )}
       </S.Menu>
@@ -117,7 +139,7 @@ const S = {
     }
 
     > div:first-of-type a:first-of-type {
-      display: block!important;
+      display: block !important;
     }
   `,
 
@@ -140,7 +162,7 @@ const S = {
   `,
 
   Menu: styled.div<{ open: boolean }>`
-    display: ${({ open }) => (open ? "flex" : "none")};
+    display: ${({ open }) => (open ? 'flex' : 'none')};
     align-items: center;
     gap: 1rem;
     flex-direction: column;
@@ -156,11 +178,11 @@ const S = {
     z-index: 10000;
     padding: 2rem;
     transition: all 5s ease-in-out;
-    
+
     > button:first-of-type {
       position: absolute;
       top: 2rem;
       right: 2rem;
     }
-  `
+  `,
 };
