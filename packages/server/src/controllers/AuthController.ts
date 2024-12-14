@@ -140,4 +140,8 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
   }
 };
 
+export const me = async (req: Request, res: Response) => {
+  return APIResponse(res, (req as any).user, 'Utilisateur récupéré', 200);
+};
+
 

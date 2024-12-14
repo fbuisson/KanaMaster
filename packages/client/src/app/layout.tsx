@@ -4,6 +4,7 @@ import "./globals.scss";
 import Navbar from "@/components/layout/Navbar";
 import ThemeWrapper from "@/components/layout/ThemeWrapper";
 import { AuthProvider } from "@/contexts/AuthContext";
+import Footer from "@/components/layout/Footer";
 
 
 const notoSansJP = Noto_Sans_JP({
@@ -30,6 +31,7 @@ export default function RootLayout({
           <ThemeWrapper>
             <Navbar />
             {children}
+            <Footer />
           </ThemeWrapper>
         </AuthProvider>
       </body>

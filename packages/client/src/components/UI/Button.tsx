@@ -28,7 +28,7 @@ export default function Button({
 
   const handleClick = (): void => {
     if (link) router.push(link);
-    else if (onClick) onClick();
+    if (onClick) onClick();
   };
 
   return (

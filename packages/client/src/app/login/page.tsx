@@ -66,8 +66,6 @@ export default function Login() {
       try {
         const response = await apiClient.post("/auth/login", formData);
         if(response.status === 200 && response.data) {
-          const { userId } = response.data.data;
-          localStorage.setItem("userId", userId);
           setIsLoggedIn(true);
           setSuccessMessage("Connexion réussie !");
           router.push("/");

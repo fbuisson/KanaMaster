@@ -1,4 +1,4 @@
-@import 'mixins';
+@use 'mixins';
 
 // Variables SCSS
 $background: #FFEED0;
@@ -26,6 +26,11 @@ body {
   font-family: var(--font-noto-sans-jp), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
 }
 
 * {
@@ -46,42 +51,81 @@ a {
 p {
   font-size: 1rem;
   font-weight: 300;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 }
 
 h1 {
   font-size: 2rem;
   font-weight: 900;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 }
 
 h2 {
   font-size: 1.6rem;
   font-weight: 700;
   text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 }
 
 h3 {
   font-size: 1.4rem;
   font-weight: 600;
   text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 }
 
 .display-1 {
-  font-size: 6rem;
+  font-size: 4.5rem;
   font-weight: 900;
+  margin-top: -35px;
+
+  @media (max-width: 768px) {
+    font-size: 3.5rem;
+    margin-top: -25px;
+  }
 }
 
 .display-text {
   font-size: 1.8rem;
   font-weight: 300;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 }
 
 .spaces-block {
   margin-top: 4rem;
 }
 
+.flex {
+  display: flex;
+  gap: 1rem;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
 .banner {
-  @include center-block();
-  @include flex-center(2rem, center, center, column);
+  @include mixins.center-block();
+  @include mixins.flex-center(2rem, center, center, column);
   position: relative;
   text-align: center;
   padding: 2rem 4rem;

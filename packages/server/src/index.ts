@@ -11,7 +11,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3000', // Autorise uniquement les requêtes depuis ce domaine
+  origin: 'http://localhost:3002', // Autorise uniquement les requêtes depuis ce domaine
   credentials: true, // Permet d'envoyer les cookies avec les requêtes
 }));
 
