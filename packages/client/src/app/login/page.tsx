@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Button from "@/components/UI/Button";
-import styled from "styled-components";
-import { apiClient } from "@/utils/apiClient";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useState } from 'react';
+import Button from '@/components/UI/Button';
+import styled from 'styled-components';
+import { apiClient } from '@/utils/apiClient';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Login() {
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, fetchUser } = useAuth();
 
   const router = useRouter();
-  
+
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState({
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   });
 
   const validateEmail = (email: string) => {
@@ -28,20 +28,21 @@ export default function Login() {
   };
 
   const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/;
+    const passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/;
     return passwordRegex.test(password);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      [name]: ""
+      [name]: '',
     }));
   };
 
@@ -56,7 +57,8 @@ export default function Login() {
     }
 
     if (!validatePassword(formData.password)) {
-      newErrors.password = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule et un chiffre";
+      newErrors.password =
+        'Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule et un chiffre';
       hasErrors = true;
     }
 
@@ -64,14 +66,15 @@ export default function Login() {
 
     if (!hasErrors) {
       try {
-        const response = await apiClient.post("/auth/login", formData);
-        if(response.status === 200 && response.data) {
+        const response = await apiClient.post('/auth/login', formData);
+        if (response.status === 200 && response.data) {
           setIsLoggedIn(true);
-          setSuccessMessage("Connexion réussie !");
-          router.push("/");
+          setSuccessMessage('Connexion réussie !');
+          fetchUser();
+          router.push('/');
         }
       } catch (error) {
-        console.error("Erreur lors de la connexion:", error);
+        console.error('Erreur lors de la connexion:', error);
       }
     }
   };
@@ -81,7 +84,9 @@ export default function Login() {
       <S.Container>
         <S.FormWrapper>
           <h1>Connexion</h1>
-          {successMessage ? <p style={{textAlign: "center"}}>{successMessage}</p> : (
+          {successMessage ? (
+            <p style={{ textAlign: 'center' }}>{successMessage}</p>
+          ) : (
             <S.Form onSubmit={handleSubmit}>
               <S.FormGroup>
                 <label htmlFor="email">Email</label>
@@ -92,7 +97,9 @@ export default function Login() {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                {errors.email && <S.ErrorMessage>{errors.email}</S.ErrorMessage>}
+                {errors.email && (
+                  <S.ErrorMessage>{errors.email}</S.ErrorMessage>
+                )}
               </S.FormGroup>
 
               <S.FormGroup>
@@ -104,10 +111,14 @@ export default function Login() {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                {errors.password && <S.ErrorMessage>{errors.password}</S.ErrorMessage>}
+                {errors.password && (
+                  <S.ErrorMessage>{errors.password}</S.ErrorMessage>
+                )}
               </S.FormGroup>
 
-              <Button type="submit" size="l">Se connecter</Button>
+              <Button type="submit" size="l">
+                Se connecter
+              </Button>
             </S.Form>
           )}
         </S.FormWrapper>
@@ -146,25 +157,9 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
-    label {
-      font-weight: 600;
-    }
-
-    input {
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-
-      &:focus {
-        outline: none;
-        border-color: var(--primary);
-      }
-    }
   `,
   ErrorMessage: styled.span`
     color: red;
     font-size: 0.875rem;
-  `
+  `,
 };

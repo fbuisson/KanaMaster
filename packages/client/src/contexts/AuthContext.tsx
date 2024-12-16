@@ -14,6 +14,7 @@ interface AuthContextType {
   userId: string | null;
   role: 'user' | 'admin' | null;
   setIsLoggedIn: (value: boolean) => void;
+  fetchUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,28 +25,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState<'user' | 'admin' | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        await apiClient.post(
-          '/auth/refresh-token',
-          {},
-          { withCredentials: true }
-        );
-        const response = await apiClient.get('/auth/me');
-        if (response.status === 200) {
-          console.log(response.data.data);
-          setIsLoggedIn(true);
-          setUserId(response.data.data._id);
-          setRole(response.data.data.role);
-        }
-      } catch (error) {}
-    };
-
     fetchUser();
   }, []);
 
+  const fetchUser = async () => {
+    try {
+      await apiClient.post(
+        '/auth/refresh-token',
+        {},
+        { withCredentials: true }
+      );
+      const response = await apiClient.get('/auth/me');
+      if (response.status === 200) {
+        console.log(response.data.data);
+        setIsLoggedIn(true);
+        setUserId(response.data.data._id);
+        setRole(response.data.data.role);
+      }
+    } catch (error) {}
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, role, setIsLoggedIn }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userId, role, setIsLoggedIn, fetchUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

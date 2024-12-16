@@ -13,8 +13,12 @@ import styled from 'styled-components';
 import UserCard from '@/components/UI/admin/UserCard';
 import CharacterCard from '@/components/UI/admin/CharacterCard';
 import Button from '@/components/UI/Button';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AdminPage() {
+  const { role } = useAuth();
+  const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [refreshU, setRefreshU] = useState(0);
@@ -31,6 +35,10 @@ export default function AdminPage() {
   const [japanesePronunciation, setJapanesePronunciation] =
     useState<string>('');
   const [translation, setTranslation] = useState<string>('');
+
+  if (role !== 'admin') {
+    router.push('/');
+  }
 
   useEffect(() => {
     fetchUsers();
