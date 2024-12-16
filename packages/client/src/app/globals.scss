@@ -141,6 +141,10 @@ h3 {
   border-radius: 80px;
   overflow: hidden;
 
+  button {
+    z-index: 2;
+  }
+
   &::before {
     content: '';
     position: absolute;

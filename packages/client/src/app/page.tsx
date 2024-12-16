@@ -84,7 +84,6 @@ const S = {
         no-repeat;
     background-size: cover;
     background-position: center;
-    z-index: -1;
     display: flex;
     justify-content: center;
     align-items: center;
