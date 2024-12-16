@@ -2,28 +2,36 @@ import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
 import { Request } from 'express';
 
-// Configuration de multer
+// Temporary storage configuration
 const storage = multer.diskStorage({
-  destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
-    cb(null, path.join(__dirname, '../../uploads/profiles')); // Dossier pour les images de profil
+  destination: (
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void
+  ) => {
+    cb(null, path.join(__dirname, '../../uploads/temp')); // Temporary folder for initial upload
   },
-  filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
-    const userId = (req as any).user?.id;
+  filename: (
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, filename: string) => void
+  ) => {
     const timestamp = Date.now();
     const ext = path.extname(file.originalname);
-    cb(null, `${userId}-${timestamp}${ext}`);
+    cb(null, `${timestamp}${ext}`);
   },
 });
 
-// Filtre pour accepter uniquement les images
-const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) => {
   if (!file.mimetype.startsWith('image/')) {
     return cb(null, false);
   }
   cb(null, true);
 };
-
-// Middleware multer configuré
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },

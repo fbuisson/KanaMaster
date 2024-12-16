@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { User, Role } from '@/types/types';
 import { apiClient } from '@/utils/apiClient';

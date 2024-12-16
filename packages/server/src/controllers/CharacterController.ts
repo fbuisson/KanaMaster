@@ -1,16 +1,61 @@
 // src/controllers/CharacterController.ts
 import { Request, Response } from 'express';
-import Character from '../models/Character';
+import Character, { CharacterType, ICharacter } from '../models/Character';
 import { APIResponse } from '../utils/response';
+import path from 'path';
+import fs from 'fs';
 
 // Créer un nouveau caractère
 export const createCharacter = async (req: Request, res: Response) => {
   try {
-    const { symbol, type, media_url } = req.body;
-    const newCharacter = new Character({ symbol, type, media_url });
+    console.log(req.body);
+    console.log(req.file);
+    const {
+      symbol,
+      type,
+      vowel,
+      consonant,
+      japanese_pronunciation,
+      translation,
+    } = req.body;
+    const file = req.file;
+
+    if (!file) {
+      return APIResponse(res, null, 'Image non téléchargée', 400);
+    }
+
+    // Create a new character without the media field first
+    const newCharacter: ICharacter = new Character({
+      symbol,
+      type,
+      vowel,
+      consonant,
+      japanese_pronunciation,
+      translation,
+      media: file.filename,
+    });
     await newCharacter.save();
 
-    return APIResponse(res, newCharacter, 'Caractère créé avec succès', 201);
+    // Define the directory path based on type and character ID
+    const dirPath = path.join(
+      __dirname,
+      '../../uploads/characters',
+      type as CharacterType,
+      newCharacter.id.toString()
+    );
+
+    // Ensure the directory exists
+    fs.mkdirSync(dirPath, { recursive: true });
+
+    // Move the file to the correct directory
+    const filePath = path.join(dirPath, file.filename);
+    fs.renameSync(file.path, filePath);
+
+    // Update the character with the media file name
+    newCharacter.media = file.filename;
+    await newCharacter.save();
+
+    return APIResponse(res, null, 'Caractère créé avec succès', 201);
   } catch (error) {
     console.error(error);
     return APIResponse(res, null, 'Erreur serveur', 500);

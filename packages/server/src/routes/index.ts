@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import authRoutes from './authRoute';
-import kanaRoutes from './kanaRoute';
+import characterRoutes from './characterRoute';
 import badgeRoutes from './badgeRoute';
 import progressionRoutes from './progressionRoute';
 import userRoutes from './userRoute';
@@ -10,7 +10,7 @@ const router = Router();
 
 // http://localhost:3000/api/auth
 router.use('/auth', authRoutes);
-router.use('/kana', kanaRoutes);
+router.use('/character', characterRoutes);
 router.use('/badge', badgeRoutes);
 router.use('/progression', progressionRoutes);
 router.use('/user', userRoutes);

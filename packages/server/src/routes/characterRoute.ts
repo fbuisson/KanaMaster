@@ -9,10 +9,17 @@ import {
 } from '../controllers/CharacterController';
 import { adminMiddleware } from '../middlewares/adminMiddelware';
 import { authMiddleware } from '../middlewares/authMiddleware';
+import upload from '../config/multer';
 
 const router = Router();
 
-router.post('/', authMiddleware, adminMiddleware, createCharacter); // Créer un caractère
+router.post(
+  '/add',
+  authMiddleware,
+  adminMiddleware,
+  upload.single('media'),
+  createCharacter
+); // Créer un caractère
 router.get('/', authMiddleware, getAllCharacters); // Obtenir tous les caractères
 router.get('/:id', authMiddleware, getCharacterById); // Obtenir un caractère par ID
 router.put('/:id', authMiddleware, adminMiddleware, updateCharacter); // Mettre à jour un caractère

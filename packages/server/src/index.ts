@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db';
 import routes from './routes/index';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 dotenv.config();
 connectDB();
@@ -21,6 +22,10 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use('/api', routes);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+console.log('Serving uploads from:', path.join(__dirname, '../uploads'));
+
+console.log(__dirname);
 
 console.log('Port: ', process.env.PORT);
 

@@ -9,3 +9,27 @@ export interface User {
   email: string;
   role: string;
 }
+
+export enum CharacterType {
+  HIRAGANA = 'hiragana',
+  KATAKANA = 'katakana',
+}
+
+export enum Vowel {
+  EMPTY = '-',
+  A = 'a',
+  I = 'i',
+  U = 'u',
+  E = 'e',
+  O = 'o',
+}
+
+export enum Consonant {
+  EMPTY = '-',
+  K = 'k',
+  G = 'g',
+  S = 's',
+  Z = 'z',
+  T = 't',
+  N = 'n',
+}
