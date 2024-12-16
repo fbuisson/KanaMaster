@@ -22,7 +22,13 @@ router.post(
 ); // Créer un caractère
 router.get('/', authMiddleware, getAllCharacters); // Obtenir tous les caractères
 router.get('/:id', authMiddleware, getCharacterById); // Obtenir un caractère par ID
-router.put('/:id', authMiddleware, adminMiddleware, updateCharacter); // Mettre à jour un caractère
+router.put(
+  '/:id',
+  authMiddleware,
+  adminMiddleware,
+  upload.single('media'),
+  updateCharacter
+); // Mettre à jour un caractère
 router.delete('/:id', authMiddleware, adminMiddleware, deleteCharacter); // Supprimer un caractère
 
 export default router;

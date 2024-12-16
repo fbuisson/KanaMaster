@@ -1,15 +1,15 @@
 @use 'mixins';
 
 // Variables SCSS
-$background: #FFEED0;
-$primary: #2C3639;
-$primary-hover: #47575C;
-$secondary: #FFEED0;
+$background: #ffeed0;
+$primary: #2c3639;
+$primary-hover: #47575c;
+$secondary: #ffeed0;
 $text: #333333;
-$button-background: #E33C3B;
+$button-background: #e33c3b;
 
 :root {
-  --font-noto-sans-jp: "Noto Sans JP", sans-serif; // Ajout si nécessaire pour font-family
+  --font-noto-sans-jp: 'Noto Sans JP', sans-serif; // Ajout si nécessaire pour font-family
 }
 
 html,
@@ -113,6 +113,7 @@ h3 {
 .flex {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .justify-center {
@@ -121,6 +122,10 @@ h3 {
 
 .align-center {
   align-items: center;
+}
+
+.mx-auto {
+  margin: 0 auto;
 }
 
 .banner {
@@ -137,9 +142,9 @@ h3 {
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
-    background-image: url("/seigaiha.png");
+    background-image: url('/seigaiha.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
@@ -150,9 +155,27 @@ h3 {
   }
 }
 
-
 @media (max-width: 768px) {
   .banner {
     display: none;
+  }
+}
+
+// FORMS
+
+label {
+  font-weight: 600;
+}
+
+input,
+select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
   }
 }

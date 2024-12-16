@@ -2,13 +2,21 @@
 
 import { apiClient } from '@/utils/apiClient';
 import { useEffect, useState } from 'react';
-import { User, CharacterType, Vowel, Consonant } from '@/types/types';
+import {
+  User,
+  Character,
+  CharacterType,
+  Vowel,
+  Consonant,
+} from '@/types/types';
 import styled from 'styled-components';
 import UserCard from '@/components/UI/admin/UserCard';
+import CharacterCard from '@/components/UI/admin/CharacterCard';
 import Button from '@/components/UI/Button';
 
 export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [refreshU, setRefreshU] = useState(0);
   const [refreshK, setRefreshK] = useState(0);
   const [showCharacterForm, setShowCharacterForm] = useState(false);
@@ -26,11 +34,18 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchUsers();
-  }, [refreshU]);
+    fetchCharacters();
+  }, [refreshU, refreshK]);
 
   const fetchUsers = async () => {
     const response = await apiClient.get('/user/list');
     setUsers(response.data.data);
+  };
+
+  const fetchCharacters = async () => {
+    const response = await apiClient.get('/character');
+    console.log('LES CHARACTERS : ', response.data.data);
+    setCharacters(response.data.data);
   };
 
   const refreshUsers = () => {
@@ -68,11 +83,6 @@ export default function AdminPage() {
     formData.append('japanese_pronunciation', japanesePronunciation || '');
     formData.append('translation', translation || '');
 
-    // Log each value in FormData
-    for (const pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-
     try {
       const response = await apiClient.post('/character/add', formData, {
         headers: {
@@ -80,6 +90,7 @@ export default function AdminPage() {
         },
       });
       console.log('Character added:', response.data);
+      refreshCharacters();
     } catch (error) {
       console.error('Error adding character:', error);
     }
@@ -172,9 +183,18 @@ export default function AdminPage() {
                 onChange={handleMediaChange}
                 required
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Sauvegarder</Button>
             </form>
           )}
+          <div className="flex spaces-block">
+            {characters.map((character) => (
+              <CharacterCard
+                key={`${character._id}-${refreshK}`}
+                character={character}
+                refresh={refreshCharacters}
+              />
+            ))}
+          </div>
         </div>
       </S.Container>
     </main>

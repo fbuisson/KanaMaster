@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use('/api', routes);
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/uploads', express.static(path.join(__dirname, '../uploads')));
 console.log('Serving uploads from:', path.join(__dirname, '../uploads'));
 
 console.log(__dirname);

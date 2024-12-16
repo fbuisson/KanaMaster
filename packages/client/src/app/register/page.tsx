@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Button from "@/components/UI/Button";
-import styled from "styled-components";
-import { apiClient } from "@/utils/apiClient";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import Button from '@/components/UI/Button';
+import styled from 'styled-components';
+import { apiClient } from '@/utils/apiClient';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
   const router = useRouter();
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: ""
+    username: '',
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState({
-    username: "",
-    email: "",
-    password: ""
+    username: '',
+    email: '',
+    password: '',
   });
 
   const validateEmail = (email: string) => {
@@ -27,20 +27,21 @@ export default function Register() {
   };
 
   const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/;
+    const passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/;
     return passwordRegex.test(password);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      [name]: ""
+      [name]: '',
     }));
   };
 
@@ -60,7 +61,8 @@ export default function Register() {
     }
 
     if (!validatePassword(formData.password)) {
-      newErrors.password = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule et un chiffre";
+      newErrors.password =
+        'Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule et un chiffre';
       hasErrors = true;
     }
 
@@ -68,9 +70,9 @@ export default function Register() {
 
     if (!hasErrors) {
       try {
-        const response = await apiClient.post("/auth/register", formData);
-        if(response.status === 201) {
-          setSuccessMessage("Inscription réussie !");
+        const response = await apiClient.post('/auth/register', formData);
+        if (response.status === 201) {
+          setSuccessMessage('Inscription réussie !');
         }
       } catch (error) {
         console.error("Erreur lors de l'inscription:", error);
@@ -83,47 +85,57 @@ export default function Register() {
       <S.Container>
         <S.FormWrapper>
           <h1>Inscription</h1>
-          {successMessage ? <p style={{textAlign: "center"}}>{successMessage}</p> : (
+          {successMessage ? (
+            <p style={{ textAlign: 'center' }}>{successMessage}</p>
+          ) : (
             <S.Form onSubmit={handleSubmit}>
               <S.FormGroup>
-              <label htmlFor="username">Nom d'utilisateur</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-              {errors.username && <S.ErrorMessage>{errors.username}</S.ErrorMessage>}
-            </S.FormGroup>
+                <label htmlFor="username">Nom d'utilisateur</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+                {errors.username && (
+                  <S.ErrorMessage>{errors.username}</S.ErrorMessage>
+                )}
+              </S.FormGroup>
 
-            <S.FormGroup>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              {errors.email && <S.ErrorMessage>{errors.email}</S.ErrorMessage>}
-            </S.FormGroup>
+              <S.FormGroup>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                {errors.email && (
+                  <S.ErrorMessage>{errors.email}</S.ErrorMessage>
+                )}
+              </S.FormGroup>
 
-            <S.FormGroup>
-              <label htmlFor="password">Mot de passe</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {errors.password && <S.ErrorMessage>{errors.password}</S.ErrorMessage>}
-            </S.FormGroup>
+              <S.FormGroup>
+                <label htmlFor="password">Mot de passe</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                {errors.password && (
+                  <S.ErrorMessage>{errors.password}</S.ErrorMessage>
+                )}
+              </S.FormGroup>
 
-            <Button type="submit" size="l">S'inscrire</Button>
-          </S.Form>
-        )}
+              <Button type="submit" size="l">
+                S'inscrire
+              </Button>
+            </S.Form>
+          )}
         </S.FormWrapper>
       </S.Container>
     </main>
@@ -160,25 +172,9 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
-    label {
-      font-weight: 600;
-    }
-
-    input {
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-
-      &:focus {
-        outline: none;
-        border-color: var(--primary);
-      }
-    }
   `,
   ErrorMessage: styled.span`
     color: red;
     font-size: 0.875rem;
-  `
+  `,
 };

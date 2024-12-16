@@ -33,3 +33,14 @@ export enum Consonant {
   T = 't',
   N = 'n',
 }
+
+export interface Character {
+  _id: string;
+  symbol: string;
+  type: CharacterType;
+  vowel: Vowel;
+  consonant: Consonant;
+  japanese_pronunciation: string;
+  translation: string;
+  media: string;
+}

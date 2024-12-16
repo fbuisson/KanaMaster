@@ -8,8 +8,6 @@ import fs from 'fs';
 // Créer un nouveau caractère
 export const createCharacter = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
-    console.log(req.file);
     const {
       symbol,
       type,
@@ -94,19 +92,58 @@ export const getCharacterById = async (req: Request, res: Response) => {
 export const updateCharacter = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { symbol, type, media_url } = req.body;
+    const {
+      symbol,
+      type,
+      vowel,
+      consonant,
+      japanese_pronunciation,
+      translation,
+    } = req.body;
+    const file = req.file;
 
-    const character = await Character.findByIdAndUpdate(
-      id,
-      { symbol, type, media_url },
-      { new: true, runValidators: true }
-    );
-
+    const character = await Character.findById(id);
     if (!character) {
       return APIResponse(res, null, 'Caractère non trouvé', 404);
     }
 
-    return APIResponse(res, character, 'Caractère mis à jour', 200);
+    // Update character fields
+    character.symbol = symbol;
+    character.type = type;
+    character.vowel = vowel;
+    character.consonant = consonant;
+    character.japanese_pronunciation = japanese_pronunciation;
+    character.translation = translation;
+
+    if (file) {
+      // Define the directory path based on type and character ID
+      const dirPath = path.join(
+        __dirname,
+        '../../uploads/characters',
+        character.type as CharacterType,
+        character.id.toString()
+      );
+
+      // Ensure the directory exists
+      fs.mkdirSync(dirPath, { recursive: true });
+
+      // Empty the directory
+      fs.readdirSync(dirPath).forEach((file) => {
+        const filePath = path.join(dirPath, file);
+        fs.unlinkSync(filePath);
+      });
+
+      // Move the new file to the correct directory
+      const filePath = path.join(dirPath, file.filename);
+      fs.renameSync(file.path, filePath);
+
+      // Update the character with the new media file name
+      character.media = file.filename;
+    }
+
+    await character.save();
+
+    return APIResponse(res, character, 'Caractère modifié avec succès', 200);
   } catch (error) {
     console.error(error);
     return APIResponse(res, null, 'Erreur serveur', 500);
