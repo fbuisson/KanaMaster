@@ -5,10 +5,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Character } from '@/types/types';
 import { apiClient } from '@/utils/apiClient';
 import { API_URL } from '@/utils/config';
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
 const QuizPage = () => {
-  const { userId } = useAuth();
+  const router = useRouter();
+  const { userId, isLoggedIn } = useAuth();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [currentCharacter, setCurrentCharacter] = useState<Character | null>(
     null
@@ -32,6 +34,12 @@ const QuizPage = () => {
 
     saveProgression();
   }, [quizStarted]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, [isLoggedIn]);
 
   const fetchCharacters = async () => {
     try {

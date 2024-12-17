@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from '@/components/UI/Button';
 import styled from 'styled-components';
 import { apiClient } from '@/utils/apiClient';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Role } from '@/types/types';
 
 export default function Login() {
-  const { setIsLoggedIn, fetchUser, isLoggedIn, role } = useAuth();
+  const { setIsLoggedIn, fetchUser } = useAuth();
 
   const router = useRouter();
 
@@ -22,14 +21,6 @@ export default function Login() {
     email: '',
     password: '',
   });
-
-  useEffect(() => {
-    if (isLoggedIn && role === Role.ADMIN) {
-      router.push('/admin/dashboard');
-    } else if (isLoggedIn) {
-      router.push('/profile');
-    }
-  }, [isLoggedIn, role]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

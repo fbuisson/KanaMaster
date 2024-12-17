@@ -1,17 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from '@/components/UI/Button';
 import styled from 'styled-components';
 import { apiClient } from '@/utils/apiClient';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { Role } from '@/types/types';
 
 export default function Register() {
-  const router = useRouter();
-  const { isLoggedIn, role } = useAuth();
-
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     username: '',
@@ -23,14 +17,6 @@ export default function Register() {
     email: '',
     password: '',
   });
-
-  useEffect(() => {
-    if (isLoggedIn && role === Role.ADMIN) {
-      router.push('/admin/dashboard');
-    } else if (isLoggedIn) {
-      router.push('/profile');
-    }
-  }, [isLoggedIn, role]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

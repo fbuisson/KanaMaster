@@ -14,6 +14,12 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  if (path.startsWith('/login') || path.startsWith('/register')) {
+    if (token) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+  }
+
   // If user is admin or the route doesn't start with /admin, continue
   return NextResponse.next();
 }
