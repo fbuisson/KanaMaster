@@ -20,7 +20,7 @@ router.post(
   upload.single('media'),
   createCharacter
 ); // Créer un caractère
-router.get('/', authMiddleware, getAllCharacters); // Obtenir tous les caractères
+router.get('/', authMiddleware, authMiddleware, getAllCharacters); // Obtenir tous les caractères
 router.get('/:id', authMiddleware, getCharacterById); // Obtenir un caractère par ID
 router.put(
   '/:id',

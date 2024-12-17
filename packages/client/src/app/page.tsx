@@ -76,6 +76,7 @@ const S = {
     top: 0;
     left: 50%;
     min-height: 100vh;
+    margin-top: -160px;
     width: 100%;
     max-width: 2000px;
     background:

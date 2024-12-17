@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
   getProgression,
-  updateProgression,
+  createProgression,
   getProgressionByKana,
 } from '../controllers/ProgressionController';
 import { authMiddleware } from '../middlewares/authMiddleware';
@@ -13,9 +13,18 @@ const router = Router();
 router.get('/:userId', authMiddleware, accessControlMiddleware, getProgression);
 
 // Récupérer la progression pour un kana spécifique
-router.get('/:userId/:kanaId', authMiddleware, accessControlMiddleware, getProgressionByKana);
+router.get(
+  '/:userId/:kanaId',
+  authMiddleware,
+  accessControlMiddleware,
+  getProgressionByKana
+);
 
-// Mettre à jour la progression pour un kana spécifique
-router.post('/update', authMiddleware, accessControlMiddleware, updateProgression);
+router.put(
+  '/:userId',
+  authMiddleware,
+  accessControlMiddleware,
+  createProgression
+);
 
 export default router;

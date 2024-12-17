@@ -50,13 +50,21 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Génère les tokens JWT
-    const accessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', {
-      expiresIn: '15m', // Durée de vie du token d'accès
-    });
+    const accessToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET || 'secret',
+      {
+        expiresIn: '15m', // Durée de vie du token d'accès
+      }
+    );
 
-    const refreshToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_REFRESH_SECRET || 'refreshSecret', {
-      expiresIn: '7d', // Durée de vie du token de rafraîchissement
-    });
+    const refreshToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_REFRESH_SECRET || 'refreshSecret',
+      {
+        expiresIn: '7d', // Durée de vie du token de rafraîchissement
+      }
+    );
 
     // Définit les cookies pour les tokens
     res.cookie('accessToken', accessToken, {
@@ -74,7 +82,7 @@ export const login = async (req: Request, res: Response) => {
     });
 
     // Réponse de succès
-    return APIResponse(res, {userId: user._id}, 'Vous êtes connecté', 200);
+    return APIResponse(res, { userId: user._id }, 'Vous êtes connecté', 200);
   } catch (err) {
     console.error(err);
     return APIResponse(res, null, 'Erreur serveur', 500);
@@ -112,7 +120,10 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     }
 
     // Vérifie et décode le refresh token
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || 'refreshSecret') as jwt.JwtPayload;
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET || 'refreshSecret'
+    ) as jwt.JwtPayload;
 
     // Vérifie si l'utilisateur existe
     const user = await User.findById(decoded.id);
@@ -121,9 +132,13 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     }
 
     // Génère un nouveau token d'accès
-    const newAccessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', {
-      expiresIn: '15m',
-    });
+    const newAccessToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET || 'secret',
+      {
+        expiresIn: '15m',
+      }
+    );
 
     // Définit le cookie pour le nouveau token d'accès
     res.cookie('accessToken', newAccessToken, {
@@ -133,7 +148,12 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       maxAge: 15 * 60 * 1000, // 15 minutes en millisecondes
     });
 
-    return APIResponse(res, { accessToken: newAccessToken }, 'Nouveau token d\'accès généré', 200);
+    return APIResponse(
+      res,
+      { accessToken: newAccessToken },
+      "Nouveau token d'accès généré",
+      200
+    );
   } catch (error) {
     console.error('Erreur lors du rafraîchissement du token:', error);
     return APIResponse(res, null, 'Token invalide ou expiré', 401);
@@ -143,5 +163,3 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 export const me = async (req: Request, res: Response) => {
   return APIResponse(res, (req as any).user, 'Utilisateur récupéré', 200);
 };
-
-

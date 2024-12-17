@@ -26,7 +26,7 @@ export default function UserCard({ user }: UserCardProps) {
   };
 
   return (
-    <Card>
+    <div className="card">
       <h3>{user.username}</h3>
       <p>ID: {user._id}</p>
       <p>Username: {user.username}</p>
@@ -53,23 +53,6 @@ export default function UserCard({ user }: UserCardProps) {
           Valider
         </Button>
       </div>
-    </Card>
+    </div>
   );
 }
-
-const Card = styled.div`
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  h3 {
-    margin-bottom: 1rem;
-  }
-`;

@@ -16,7 +16,7 @@ export enum CharacterType {
 }
 
 export enum Vowel {
-  EMPTY = '-',
+  EMPTY = '',
   A = 'a',
   I = 'i',
   U = 'u',
@@ -25,12 +25,20 @@ export enum Vowel {
 }
 
 export enum Consonant {
-  EMPTY = '-',
+  EMPTY = '',
   K = 'k',
   G = 'g',
   S = 's',
   Z = 'z',
   T = 't',
+  D = 'd',
+  H = 'h',
+  B = 'b',
+  P = 'p',
+  M = 'm',
+  Y = 'y',
+  R = 'r',
+  W = 'w',
   N = 'n',
 }
 

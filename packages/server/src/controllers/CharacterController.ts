@@ -18,6 +18,12 @@ export const createCharacter = async (req: Request, res: Response) => {
     } = req.body;
     const file = req.file;
 
+    console.log('### BODY: ', req.body);
+
+    if (!vowel && !consonant) {
+      return APIResponse(res, null, 'Voyelle ou consonne manquante', 400);
+    }
+
     if (!file) {
       return APIResponse(res, null, 'Image non téléchargée', 400);
     }
@@ -102,6 +108,10 @@ export const updateCharacter = async (req: Request, res: Response) => {
     } = req.body;
     const file = req.file;
 
+    if (!vowel && !consonant) {
+      return APIResponse(res, null, 'Voyelle ou consonne manquante', 400);
+    }
+
     const character = await Character.findById(id);
     if (!character) {
       return APIResponse(res, null, 'Caractère non trouvé', 404);
@@ -110,8 +120,12 @@ export const updateCharacter = async (req: Request, res: Response) => {
     // Update character fields
     character.symbol = symbol;
     character.type = type;
-    character.vowel = vowel;
-    character.consonant = consonant;
+    if (vowel) {
+      character.vowel = vowel;
+    } else character.vowel = null;
+    if (consonant) {
+      character.consonant = consonant;
+    } else character.consonant = null;
     character.japanese_pronunciation = japanese_pronunciation;
     character.translation = translation;
 

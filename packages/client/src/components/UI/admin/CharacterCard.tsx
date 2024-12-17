@@ -45,8 +45,9 @@ export default function CharacterCard({
     const formData = new FormData();
     formData.append('symbol', editedCharacter.symbol);
     formData.append('type', editedCharacter.type);
-    formData.append('vowel', editedCharacter.vowel);
-    formData.append('consonant', editedCharacter.consonant);
+    editedCharacter.vowel && formData.append('vowel', editedCharacter.vowel);
+    editedCharacter.consonant &&
+      formData.append('consonant', editedCharacter.consonant);
     formData.append(
       'japanese_pronunciation',
       editedCharacter.japanese_pronunciation
@@ -72,8 +73,13 @@ export default function CharacterCard({
     }
   };
 
+  const handleDelete = async () => {
+    await apiClient.delete(`/character/${character._id}`);
+    refresh();
+  };
+
   return (
-    <Card>
+    <div className="card">
       {!isEditing ? (
         <>
           <img
@@ -94,9 +100,10 @@ export default function CharacterCard({
           <p>Consonne: {character.consonant}</p>
           <p>Prononciation: {character.japanese_pronunciation}</p>
           <p>Traduction: {character.translation}</p>
-          <Button onClick={() => setIsEditing(true)} className="spaces-block">
-            Modifier
-          </Button>
+          <div className="flex spaces-block">
+            <Button onClick={() => setIsEditing(true)}>Modifier</Button>
+            <Button onClick={handleDelete}>Supprimer</Button>
+          </div>
         </>
       ) : (
         <>
@@ -166,7 +173,7 @@ export default function CharacterCard({
             onChange={handleInputChange}
             placeholder="Traduction"
           />
-          <div className="flex">
+          <div className="flex spaces-block">
             <Button onClick={handleUpdate}>Sauvegarder</Button>
             <Button
               onClick={() => {
@@ -182,39 +189,6 @@ export default function CharacterCard({
       {message && (
         <p style={{ color: 'green', marginTop: '1rem' }}>{message}</p>
       )}
-    </Card>
+    </div>
   );
 }
-
-const Card = styled.div`
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  h3 {
-    margin-bottom: 1rem;
-  }
-
-  input,
-  select {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .flex {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-`;

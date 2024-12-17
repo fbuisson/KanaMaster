@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [translation, setTranslation] = useState<string>('');
 
   if (role !== 'admin') {
+    console.log('ROLE : ', role);
     router.push('/');
   }
 
@@ -86,8 +87,12 @@ export default function AdminPage() {
     formData.append('media', mediaFile);
     formData.append('symbol', symbol);
     formData.append('type', selectedCharacterType || '');
-    formData.append('vowel', selectedVowel || '');
-    formData.append('consonant', selectedConsonant || '');
+    if (selectedVowel !== null) {
+      formData.append('vowel', selectedVowel);
+    }
+    if (selectedConsonant !== null) {
+      formData.append('consonant', selectedConsonant);
+    }
     formData.append('japanese_pronunciation', japanesePronunciation || '');
     formData.append('translation', translation || '');
 
@@ -150,7 +155,6 @@ export default function AdminPage() {
               <select
                 value={selectedVowel || ''}
                 onChange={(e) => setSelectedVowel(e.target.value as Vowel)}
-                required
               >
                 {Object.values(Vowel).map((vowel) => (
                   <option key={vowel} value={vowel}>
@@ -163,7 +167,6 @@ export default function AdminPage() {
                 onChange={(e) =>
                   setSelectedConsonant(e.target.value as Consonant)
                 }
-                required
               >
                 {Object.values(Consonant).map((consonant) => (
                   <option key={consonant} value={consonant}>
@@ -212,6 +215,5 @@ export default function AdminPage() {
 const S = {
   Container: styled.div`
     padding: 2rem;
-    margin-top: 80px;
   `,
 };
