@@ -3,7 +3,7 @@ import {
   getAllBadges,
   createBadge,
   deleteBadge,
-} from '../controllers/BadgesController';
+} from '../controllers/BadgeController';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { adminMiddleware } from '../middlewares/adminMiddelware';
 import upload from '../config/multer';

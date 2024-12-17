@@ -8,7 +8,7 @@ import {
   updateUserRole,
 } from '../controllers/UserBadgeController';
 import upload from '../config/multer';
-import { getUser, updateProfileImage } from '../controllers/UserController';
+import { getUser, updateProfileImage } from '../controllers/UsersController';
 import { adminMiddleware } from '../middlewares/adminMiddelware';
 
 const router = Router();
