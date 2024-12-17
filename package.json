@@ -1,11 +1,14 @@
 {
-	"devDependencies": {
-		"concurrently": "^9.1.0",
-		"prettier": "^3.3.3"
-	},
-	"scripts": {
-		"dev:client": "pnpm --filter kanamaster-client dev",
-		"dev:server": "pnpm --filter kanamaster-server dev",
-		"dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\""
-	}
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "prettier": "^3.3.3"
+  },
+  "scripts": {
+    "dev:client": "pnpm --filter kanamaster-client dev",
+    "dev:server": "pnpm --filter kanamaster-server dev",
+    "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\"",
+    "build:client": "pnpm --filter kanamaster-client build",
+    "build:server": "pnpm --filter kanamaster-server build",
+    "build": "pnpm build:client && pnpm build:server"
+  }
 }

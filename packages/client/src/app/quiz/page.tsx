@@ -27,7 +27,6 @@ const QuizPage = () => {
   useEffect(() => {
     const fetchBadges = async () => {
       const response = await apiClient.post(`/user/badges/${userId}`);
-      console.log(response.data.count);
       setCount(response.data.count);
     };
     userId && fetchBadges();

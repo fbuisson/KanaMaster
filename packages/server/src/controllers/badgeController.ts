@@ -18,7 +18,6 @@ export const createBadge = async (req: Request, res: Response) => {
         percentage,
       },
     };
-    console.log(req.body);
 
     if (!file) {
       return APIResponse(res, null, 'Image non téléchargée', 400);

@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:3000', // Autorise uniquement les requêtes depuis ce domaine
+    origin: '*', // Autorise uniquement les requêtes depuis ce domaine
     credentials: true, // Permet d'envoyer les cookies avec les requêtes
   })
 );
@@ -23,11 +23,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api', routes);
 app.use('/api/uploads', express.static(path.join(__dirname, '../uploads')));
-console.log('Serving uploads from:', path.join(__dirname, '../uploads'));
-
-console.log(__dirname);
-
-console.log('Port: ', process.env.PORT);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

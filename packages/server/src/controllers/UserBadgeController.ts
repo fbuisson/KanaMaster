@@ -30,9 +30,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
 
 export const assignBadgeToUser = async (req: Request, res: Response) => {
   try {
-    console.log("EN COURS D'ASSIGNATION");
     const { userId } = req.params;
-    console.log('USERID: ', userId);
 
     const objectId = new mongoose.Types.ObjectId(String(userId));
 

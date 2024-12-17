@@ -11,5 +11,5 @@
     "forceConsistentCasingInFileNames": true,
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["src", "src/types/express.d.ts", "../client/src/types/types.ts"]
+  "include": ["src", "src/types/express.d.ts"]
 }

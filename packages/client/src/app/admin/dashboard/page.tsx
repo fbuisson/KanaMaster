@@ -43,7 +43,6 @@ export default function AdminPage() {
   const [badges, setBadges] = useState<Badge[]>([]);
 
   if (role !== 'admin') {
-    console.log('ROLE : ', role);
     router.push('/');
   }
 
@@ -66,13 +65,11 @@ export default function AdminPage() {
 
   const fetchCharacters = async () => {
     const response = await apiClient.get('/character');
-    console.log('LES CHARACTERS : ', response.data.data);
     setCharacters(response.data.data);
   };
 
   const fetchBadges = async () => {
     const response = await apiClient.get('/badge');
-    console.log('LES BADGES : ', response.data.data);
     setBadges(response.data.data);
   };
 
@@ -99,7 +96,6 @@ export default function AdminPage() {
   const handleMediaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setMediaFile(event.target.files[0]);
-      console.log(event.target.files[0]);
     }
   };
 
@@ -129,7 +125,6 @@ export default function AdminPage() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Character added:', response.data);
       refreshCharacters();
     } catch (error) {
       console.error('Error adding character:', error);

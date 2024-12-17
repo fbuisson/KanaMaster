@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       const response = await apiClient.get('/auth/me');
       if (response.status === 200) {
-        console.log(response.data.data);
         setIsLoggedIn(true);
         setUserId(response.data.data._id);
         setRole(response.data.data.role);
