@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
 import { APIResponse } from '../utils/response';
-import Badge from '../models/Badge';
+import Badge from '../models/Badges';
 
 // Créer un nouveau badge
 export const createBadge = async (req: Request, res: Response) => {

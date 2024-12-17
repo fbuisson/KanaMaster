@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import UserBadge from '../models/UserBadge';
-import Badge from '../models/Badge';
+import Badge from '../models/Badges';
 import Progression from '../models/Progression';
 import { APIResponse } from '../utils/response';
 import User from '../models/User';

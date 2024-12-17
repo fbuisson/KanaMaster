@@ -5,6 +5,7 @@ export interface IBadge extends Document {
   title: string;
   description: string;
   media: string;
+
   requirements: {
     type: CharacterType | 'kana' | 'all';
     threshold: {
