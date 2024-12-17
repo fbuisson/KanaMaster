@@ -1,15 +1,17 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IUserBadge extends Document {
-  user_id: Schema.Types.ObjectId;
-  badge_id: Schema.Types.ObjectId;
+interface IUserBadge extends Document {
+  user_id: mongoose.Types.ObjectId;
+  badge_id: mongoose.Types.ObjectId;
   date_awarded: Date;
 }
 
-const UserBadgeSchema = new Schema<IUserBadge>({
-  user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  badge_id: { type: Schema.Types.ObjectId, ref: 'Badge', required: true },
+const UserBadgeSchema: Schema = new Schema({
+  user_id: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  badge_id: { type: mongoose.Types.ObjectId, ref: 'Badge', required: true },
   date_awarded: { type: Date, default: Date.now },
 });
 
-export default model<IUserBadge>('UserBadge', UserBadgeSchema);
+UserBadgeSchema.index({ user_id: 1, badge_id: 1 }, { unique: true });
+
+export default mongoose.model<IUserBadge>('UserBadge', UserBadgeSchema);

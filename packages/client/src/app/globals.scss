@@ -21,7 +21,6 @@ body {
 body {
   color: $primary;
   background: $background;
-  max-width: 2000px;
   margin: 0 auto;
   font-family: var(--font-noto-sans-jp), sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -111,6 +110,43 @@ h3 {
 
 main {
   margin-top: 80px;
+  min-height: calc(100vh - 80px);
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  width: 100%;
+  height: 80px;
+  z-index: 9999;
+
+  > div:first-of-type a {
+    display: flex;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  > div:first-of-type a:first-of-type {
+    display: block !important;
+  }
+}
+
+.ellipse {
+  @media (min-width: 2560px) {
+    display: none;
+  }
+}
+
+.profile-image {
+  background-color: $primary;
 }
 
 .display-1 {
@@ -156,7 +192,15 @@ main {
 }
 
 .mx-auto {
-  margin: 0 auto;
+  margin-inline: auto;
+}
+
+.rounded {
+  border-radius: 50%;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .banner {
@@ -188,28 +232,47 @@ main {
     width: 60%;
     height: 60%;
   }
-}
 
-@media (max-width: 768px) {
-  .banner {
+  @media (max-width: 768px) {
     display: none;
   }
+}
+
+input[type='file'] {
+  color: $red-background;
+  background-color: #fff;
+  border: 1px solid $red-background;
+}
+
+input[type='file']:focus {
+  outline: 2px dashed $red-background;
+  outline-offset: 2px;
+}
+
+input[type='file']::file-selector-button {
+  margin-right: 8px;
+  border: none;
+  background: $red-background;
+  padding: 8px 12px;
+  color: #fff;
+  cursor: pointer;
+}
+
+input[type='file']::file-selector-button:hover {
+  background: #a42221;
 }
 
 .card {
   display: flex;
   flex-direction: column;
   padding: 2rem;
+  margin: 0 auto;
   background: white;
   border-radius: 10px;
   min-width: 300px;
+  max-width: 500px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
 
   @media screen and (max-width: 768px) {
     width: 90%;
@@ -222,7 +285,7 @@ label {
   font-weight: 600;
 }
 
-input,
+input:not([type='file']),
 select {
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -254,6 +317,11 @@ progress {
   }
 }
 
+.message-success {
+  color: green;
+  font-weight: 600;
+}
+
 // PAGES
 
 .quiz-main {
@@ -263,5 +331,11 @@ progress {
 
   img {
     width: 100%;
+  }
+}
+
+.kanas-main {
+  img {
+    max-width: 100%;
   }
 }

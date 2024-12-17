@@ -8,6 +8,7 @@ import {
   CharacterType,
   Vowel,
   Consonant,
+  Badge,
 } from '@/types/types';
 import styled from 'styled-components';
 import UserCard from '@/components/UI/admin/UserCard';
@@ -15,6 +16,7 @@ import CharacterCard from '@/components/UI/admin/CharacterCard';
 import Button from '@/components/UI/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import BadgeForm from '@/components/UI/admin/BadgeForm';
 
 export default function AdminPage() {
   const { role } = useAuth();
@@ -24,8 +26,9 @@ export default function AdminPage() {
   const [refreshU, setRefreshU] = useState(0);
   const [refreshK, setRefreshK] = useState(0);
   const [showCharacterForm, setShowCharacterForm] = useState(false);
-  const [selectedCharacterType, setSelectedCharacterType] =
-    useState<CharacterType>(CharacterType.HIRAGANA);
+  const [selectedCharacterType, setSelectedCharacterType] = useState<
+    CharacterType | undefined
+  >(undefined);
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [symbol, setSymbol] = useState('');
   const [selectedVowel, setSelectedVowel] = useState<Vowel | null>(null);
@@ -35,6 +38,9 @@ export default function AdminPage() {
   const [japanesePronunciation, setJapanesePronunciation] =
     useState<string>('');
   const [translation, setTranslation] = useState<string>('');
+  const [showBadgeForm, setShowBadgeForm] = useState(false);
+  const [refreshB, setRefreshB] = useState(0);
+  const [badges, setBadges] = useState<Badge[]>([]);
 
   if (role !== 'admin') {
     console.log('ROLE : ', role);
@@ -43,8 +49,15 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchUsers();
+  }, [refreshU]);
+
+  useEffect(() => {
     fetchCharacters();
-  }, [refreshU, refreshK]);
+  }, [refreshK]);
+
+  useEffect(() => {
+    fetchBadges();
+  }, [refreshB]);
 
   const fetchUsers = async () => {
     const response = await apiClient.get('/user/list');
@@ -57,6 +70,12 @@ export default function AdminPage() {
     setCharacters(response.data.data);
   };
 
+  const fetchBadges = async () => {
+    const response = await apiClient.get('/badge');
+    console.log('LES BADGES : ', response.data.data);
+    setBadges(response.data.data);
+  };
+
   const refreshUsers = () => {
     setRefreshU((prev) => prev + 1);
   };
@@ -65,8 +84,16 @@ export default function AdminPage() {
     setRefreshK((prev) => prev + 1);
   };
 
+  const refreshBadges = () => {
+    setRefreshB((prev) => prev + 1);
+  };
+
   const toggleCharacterForm = () => {
     setShowCharacterForm((prev) => !prev);
+  };
+
+  const toggleBadgeForm = () => {
+    setShowBadgeForm((prev) => !prev);
   };
 
   const handleMediaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,10 +114,10 @@ export default function AdminPage() {
     formData.append('media', mediaFile);
     formData.append('symbol', symbol);
     formData.append('type', selectedCharacterType || '');
-    if (selectedVowel !== null) {
+    if (selectedVowel !== null && selectedVowel !== Vowel.EMPTY) {
       formData.append('vowel', selectedVowel);
     }
-    if (selectedConsonant !== null) {
+    if (selectedConsonant !== null && selectedConsonant !== Consonant.EMPTY) {
       formData.append('consonant', selectedConsonant);
     }
     formData.append('japanese_pronunciation', japanesePronunciation || '');
@@ -134,7 +161,7 @@ export default function AdminPage() {
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
-                placeholder="Symbol"
+                placeholder="Symbole"
                 value={symbol}
                 onChange={(e) => setSymbol(e.target.value)}
                 required
@@ -146,6 +173,7 @@ export default function AdminPage() {
                 }
                 required
               >
+                <option value="">--- Sélectionnez un type ---</option>
                 {Object.values(CharacterType).map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -206,6 +234,14 @@ export default function AdminPage() {
               />
             ))}
           </div>
+        </div>
+        <div className="spaces-block">
+          <div className="flex">
+            <h2>Badges</h2>
+            <Button onClick={refreshBadges}>Rafraîchir</Button>
+            <Button onClick={toggleBadgeForm}>Ajouter un Badge</Button>
+          </div>
+          {showBadgeForm && <BadgeForm />}
         </div>
       </S.Container>
     </main>

@@ -22,10 +22,20 @@ const QuizPage = () => {
   >([]);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizFinished, setQuizFinished] = useState(false);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const fetchBadges = async () => {
+      const response = await apiClient.post(`/user/badges/${userId}`);
+      console.log(response.data.count);
+      setCount(response.data.count);
+    };
+    userId && fetchBadges();
+  }, [userId]);
 
   useEffect(() => {
     const saveProgression = async () => {
-      if (!quizStarted && responses.length > 0) {
+      if (quizFinished && responses.length > 0) {
         await apiClient.put(`/progression/${userId}`, {
           characters: responses,
         });
@@ -33,7 +43,7 @@ const QuizPage = () => {
     };
 
     saveProgression();
-  }, [quizStarted]);
+  }, [quizFinished]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -57,7 +67,7 @@ const QuizPage = () => {
     fetchCharacters();
     const interval = setInterval(() => {
       setTimer((prev) => {
-        if (prev === 28) {
+        if (prev === 1) {
           clearInterval(interval);
           setQuizStarted(false);
           setQuizFinished(true);
@@ -110,8 +120,12 @@ const QuizPage = () => {
             <strong>Bravo ! Tu as terminé le quiz.</strong>
             <br />
             <br />
+            Tu as remporté <strong>{count ?? 0} nouveau(x) badge(s)</strong>.
+            <br />
+            <br />
             Ton taux de bonnes réponses est de{' '}
-            <strong>{calculateScore() ?? 0}%</strong>.
+            <strong>{Math.round(calculateScore() ?? 0)}%</strong>.
+            <br />
             <br />
             Ta progression a été enregistrée.
             <br />

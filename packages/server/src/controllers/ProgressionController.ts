@@ -8,13 +8,22 @@ export const getProgression = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    // Récupérer toute la progression de l'utilisateur
-    const progression = await Progression.find({ user_id: userId }).populate(
-      'kana_id'
+    const progressions = await Progression.find({ user_id: userId }).populate(
+      'character_id'
     );
+
+    const formattedProgressions = progressions.map((prog) => ({
+      _id: prog._id,
+      user_id: prog.user_id,
+      character_type: prog.character_type,
+      attempts: prog.attempts,
+      correct_attempts: prog.correct_attempts,
+      character: prog.character_id,
+    }));
+
     return APIResponse(
       res,
-      progression,
+      formattedProgressions,
       'Progression utilisateur récupérée avec succès',
       200
     );

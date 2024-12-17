@@ -8,10 +8,7 @@ import {
   updateUserRole,
 } from '../controllers/UserBadgeController';
 import upload from '../config/multer';
-import {
-  getUserProfile,
-  updateProfileImage,
-} from '../controllers/userController';
+import { getUser, updateProfileImage } from '../controllers/userController';
 import { adminMiddleware } from '../middlewares/adminMiddelware';
 
 const router = Router();
@@ -19,8 +16,8 @@ const router = Router();
 // Routes spécifiques aux utilisateurs
 router.get('/list', authMiddleware, adminMiddleware, getUsers);
 router.put('/:userId/role', authMiddleware, adminMiddleware, updateUserRole);
-router.get(
-  '/badges',
+router.post(
+  '/badges/:userId',
   authMiddleware,
   accessControlMiddleware,
   assignBadgeToUser
@@ -34,17 +31,12 @@ router.get(
 
 // Endpoint pour uploader une image de profil
 router.post(
-  '/profile/upload',
+  '/profile/upload/:userId',
   authMiddleware,
   accessControlMiddleware,
-  upload.single('profileImage'),
+  upload.single('media'),
   updateProfileImage
 );
-router.get(
-  '/profile/',
-  authMiddleware,
-  accessControlMiddleware,
-  getUserProfile
-);
+router.get('/:userId', authMiddleware, accessControlMiddleware, getUser);
 
 export default router;

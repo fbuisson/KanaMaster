@@ -6,9 +6,10 @@ import Button from '../UI/Button';
 import { apiClient } from '../../utils/apiClient';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
+import { API_URL } from '@/utils/config';
 
 export default function Navbar() {
-  const { isLoggedIn, setIsLoggedIn, role } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, role, userId, media } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -37,7 +38,7 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <S.Nav>
+    <nav>
       <div className="flex align-center">
         <Link
           href="/"
@@ -51,8 +52,8 @@ export default function Navbar() {
         <Link href="/quiz" onClick={() => setMenuOpen(false)}>
           Quiz
         </Link>
-        <Link href="/lessons" onClick={() => setMenuOpen(false)}>
-          Cours
+        <Link href="/kanas" onClick={() => setMenuOpen(false)}>
+          Kanas
         </Link>
       </div>
       <div className="flex align-center">
@@ -70,7 +71,19 @@ export default function Navbar() {
             <Link
               href={role === 'admin' ? '/admin/dashboard' : '/profile'}
               onClick={() => setMenuOpen(false)}
+              className="flex justify-center align-center"
             >
+              <img
+                src={
+                  media
+                    ? `${API_URL}/uploads/users/${userId}/${media}`
+                    : '/default-avatar.png'
+                }
+                alt="Profil"
+                width={40}
+                height={40}
+                className="rounded profile-image"
+              />
               {role === 'admin' ? 'Tableau de bord' : 'Mon profil'}
             </Link>
             <Button onClick={handleLogout}>Se déconnecter</Button>
@@ -90,7 +103,19 @@ export default function Navbar() {
         <Button onClick={() => setMenuOpen(false)} size="l">
           X
         </Button>
-        {isLoggedIn && role ? (
+        <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <img src="/logo.svg" alt="Accueil" />
+        </Link>
+        <Link href="/" onClick={() => setMenuOpen(false)}>
+          Accueil
+        </Link>
+        <Link href="/quiz" onClick={() => setMenuOpen(false)}>
+          Quiz
+        </Link>
+        <Link href="/kanas" onClick={() => setMenuOpen(false)}>
+          Kanas
+        </Link>
+        {isLoggedIn && role && userId ? (
           <>
             <Link
               href={role === 'admin' ? '/admin/dashboard' : '/profile'}
@@ -111,38 +136,11 @@ export default function Navbar() {
           </>
         )}
       </S.Menu>
-    </S.Nav>
+    </nav>
   );
 }
 
 const S = {
-  Nav: styled.nav`
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    max-width: 2000px;
-    width: 100%;
-    height: 80px;
-    z-index: 9999;
-
-    > div:first-of-type a {
-      display: flex;
-
-      @media (max-width: 768px) {
-        display: none;
-      }
-    }
-
-    > div:first-of-type a:first-of-type {
-      display: block !important;
-    }
-  `,
-
   NavLinks: styled.div`
     display: flex;
 

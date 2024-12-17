@@ -15,8 +15,15 @@ export enum CharacterType {
   KATAKANA = 'katakana',
 }
 
+export enum BadgeType {
+  HIRAGANA = 'hiragana',
+  KATAKANA = 'katakana',
+  KANA = 'kana',
+  ALL = 'all',
+}
+
 export enum Vowel {
-  EMPTY = '',
+  EMPTY = 'Pas de voyelle',
   A = 'a',
   I = 'i',
   U = 'u',
@@ -25,7 +32,7 @@ export enum Vowel {
 }
 
 export enum Consonant {
-  EMPTY = '',
+  EMPTY = 'Pas de consonne',
   K = 'k',
   G = 'g',
   S = 's',
@@ -51,4 +58,24 @@ export interface Character {
   japanese_pronunciation: string;
   translation: string;
   media: string;
+}
+
+export interface Badge {
+  _id: string;
+  title: string;
+  description: string;
+  media: string;
+  requirements: {
+    type: CharacterType | 'kana' | 'all';
+    threshold: {
+      attempts: number;
+      percentage: number;
+    };
+  };
+}
+
+export interface UserBadge {
+  _id: string;
+  badge: Badge;
+  date_awarded: Date;
 }

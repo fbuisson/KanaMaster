@@ -5,7 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: 'user' | 'admin';
-  image: string;
+  media: string | null;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -17,7 +17,7 @@ const UserSchema = new Schema<IUser>({
     enum: ['user', 'admin'],
     default: 'user',
   },
-  image: { type: String, default: 'https://via.placeholder.com/150' },
+  media: { type: String, default: null },
 });
 
 export default model<IUser>('User', UserSchema);

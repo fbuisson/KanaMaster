@@ -13,8 +13,9 @@ interface AuthContextType {
   isLoggedIn: boolean;
   userId: string | null;
   role: 'user' | 'admin' | null;
+  media: string | null;
+  fetchUser: () => void;
   setIsLoggedIn: (value: boolean) => void;
-  fetchUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,11 +23,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [media, setMedia] = useState<string | null>(null);
   const [role, setRole] = useState<'user' | 'admin' | null>(null);
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const fetchUser = async () => {
     try {
@@ -41,13 +39,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(true);
         setUserId(response.data.data._id);
         setRole(response.data.data.role);
+        setMedia(response.data.data.media);
       }
     } catch (error) {}
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userId, role, setIsLoggedIn, fetchUser }}
+      value={{ isLoggedIn, userId, role, setIsLoggedIn, media, fetchUser }}
     >
       {children}
     </AuthContext.Provider>

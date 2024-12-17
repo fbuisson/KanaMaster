@@ -78,13 +78,12 @@ const S = {
     min-height: 100vh;
     margin-top: -160px;
     width: 100%;
-    max-width: 2000px;
     background:
       linear-gradient(180deg, rgba(255, 169, 102, 0.01) 58.06%, #ffeed0 99.87%),
       url('/home/hero.png') lightgray -1px -56.979px / 101.886% 129.592%
         no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: top;
     display: flex;
     justify-content: center;
     align-items: center;

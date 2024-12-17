@@ -4,6 +4,7 @@ import Badge from '../models/Badge';
 import Progression, { IProgression } from '../models/Progression';
 import { APIResponse } from '../utils/response';
 import User from '../models/User';
+import mongoose from 'mongoose';
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -29,15 +30,22 @@ export const updateUserRole = async (req: Request, res: Response) => {
 
 export const assignBadgeToUser = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
-    const progressionDoc = await Progression.findOne({ user_id });
+    console.log("EN COURS D'ASSIGNATION");
+    const { userId } = req.params;
+    console.log('USERID: ', userId);
 
-    if (!progressionDoc) {
+    const objectId = new mongoose.Types.ObjectId(String(userId));
+
+    const progressionDocs = await Progression.find({
+      user_id: objectId,
+    });
+
+    if (!progressionDocs || progressionDocs.length === 0) {
       return APIResponse(res, null, 'Progression utilisateur introuvable', 404);
     }
 
-    const userProgression = progressionDoc.toObject() as IProgression;
     const badges = await Badge.find();
+    let assignedBadgesCount = 0;
 
     for (const badge of badges) {
       const { type, threshold } = badge.requirements;
@@ -45,32 +53,76 @@ export const assignBadgeToUser = async (req: Request, res: Response) => {
       let meetsRequirements = false;
 
       if (type === 'all') {
-        const totalProgression = Object.values(userProgression).reduce(
-          (sum, value) => sum + value,
+        const totalAttempts = progressionDocs.reduce(
+          (sum, doc) => sum + doc.attempts,
           0
         );
-        meetsRequirements = totalProgression >= threshold;
-      } else {
+        const totalCorrectAttempts = progressionDocs.reduce(
+          (sum, doc) => sum + doc.correct_attempts,
+          0
+        );
+        const successPercentage = (totalCorrectAttempts / totalAttempts) * 100;
+
         meetsRequirements =
-          userProgression[type as keyof IProgression] >= threshold;
+          totalAttempts >= threshold.attempts &&
+          successPercentage >= threshold.percentage;
+      } else if (type === 'kana') {
+        const kanaProgressions = progressionDocs.filter(
+          (doc) =>
+            doc.character_type === 'hiragana' ||
+            doc.character_type === 'katakana'
+        );
+
+        const totalKanaAttempts = kanaProgressions.reduce(
+          (sum, doc) => sum + doc.attempts,
+          0
+        );
+        const totalKanaCorrectAttempts = kanaProgressions.reduce(
+          (sum, doc) => sum + doc.correct_attempts,
+          0
+        );
+        const kanaSuccessPercentage =
+          (totalKanaCorrectAttempts / totalKanaAttempts) * 100;
+
+        meetsRequirements =
+          kanaProgressions.length >= threshold.number &&
+          totalKanaAttempts >= threshold.attempts &&
+          kanaSuccessPercentage >= threshold.percentage;
+      } else {
+        const progression = progressionDocs.find(
+          (doc) => doc.character_type === type
+        );
+
+        if (progression) {
+          const successPercentage =
+            (progression.correct_attempts / progression.attempts) * 100;
+
+          meetsRequirements =
+            progression.attempts >= threshold.attempts &&
+            successPercentage >= threshold.percentage;
+        }
       }
 
       if (meetsRequirements) {
         const existing = await UserBadge.findOne({
-          user_id,
+          user_id: objectId,
           badge_id: badge._id,
         });
         if (!existing) {
-          const userBadge = new UserBadge({ user_id, badge_id: badge._id });
+          const userBadge = new UserBadge({
+            user_id: objectId,
+            badge_id: badge._id,
+          });
           await userBadge.save();
+          assignedBadgesCount++;
         }
       }
     }
 
     return APIResponse(
       res,
-      null,
-      'Badges vérifiés et attribués si nécessaire',
+      { count: assignedBadgesCount },
+      `${assignedBadgesCount} nouveau(x) badge(s) attribué(s)`,
       200
     );
   } catch (error) {
@@ -86,9 +138,16 @@ export const getUserBadges = async (req: Request, res: Response) => {
     const userBadges = await UserBadge.find({ user_id: userId }).populate(
       'badge_id'
     );
+
+    const formattedUserBadges = userBadges.map((userBadge) => ({
+      _id: userBadge._id,
+      user_id: userBadge.user_id,
+      badge: userBadge.badge_id,
+      date_awarded: userBadge.date_awarded,
+    }));
     return APIResponse(
       res,
-      userBadges,
+      formattedUserBadges,
       "Liste des badges de l'utilisateur",
       200
     );

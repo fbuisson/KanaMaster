@@ -18,8 +18,6 @@ export const createCharacter = async (req: Request, res: Response) => {
     } = req.body;
     const file = req.file;
 
-    console.log('### BODY: ', req.body);
-
     if (!vowel && !consonant) {
       return APIResponse(res, null, 'Voyelle ou consonne manquante', 400);
     }

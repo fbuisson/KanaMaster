@@ -1,29 +1,25 @@
-"use client";
+'use client';
 
-import styled from "styled-components";
-import Link from "next/link";
+import styled from 'styled-components';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
     <S.Footer className="spaces-block">
-      <img src="/footer/ellipse.svg" alt="Ellipse" />
+      <img src="/footer/ellipse.svg" alt="Ellipse" className="ellipse" />
       <S.Column>
         <span>KanaMaster</span>
         <p>Apprends à lire les kanas simplement et efficacement.</p>
       </S.Column>
-      
+
       <S.Column>
         <span>Navigation</span>
         <Link href="/">Accueil</Link>
-        <Link href="/lessons">Cours</Link>
-        <Link href="/games">Jeux</Link>
+        <Link href="/quiz">Quiz</Link>
+        <Link href="/kanas">Kanas</Link>
       </S.Column>
 
-      <S.Column>
-        <span>À propos</span>
-        <Link href="/about-us">Qui sommes-nous ?</Link>
-        <Link href="/faq">FAQ</Link>
-      </S.Column>
+      <S.Column></S.Column>
     </S.Footer>
   );
 }
@@ -69,7 +65,7 @@ const S = {
 
     a {
       color: ${({ theme }) => theme.colors.secondary};
-      
+
       &:hover {
         color: ${({ theme }) => theme.colors.button.background};
       }
@@ -78,5 +74,5 @@ const S = {
     @media (max-width: 768px) {
       margin: 0 auto;
     }
-  `
+  `,
 };
