@@ -9,7 +9,6 @@ import {
   Vowel,
   Consonant,
 } from '@/types/types';
-import styled from 'styled-components';
 import UserCard from '@/components/UI/admin/UserCard';
 import CharacterCard from '@/components/UI/admin/CharacterCard';
 import Button from '@/components/UI/Button';

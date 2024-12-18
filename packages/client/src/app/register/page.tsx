@@ -93,7 +93,7 @@ export default function Register() {
               style={{ gap: '1.5rem' }}
             >
               <div className="flex flex-column" style={{ gap: '0.5rem' }}>
-                <label htmlFor="username">Nom d'utilisateur</label>
+                <label htmlFor="username">Nom d&#39;utilisateur</label>
                 <input
                   type="text"
                   id="username"
@@ -135,7 +135,7 @@ export default function Register() {
               </div>
 
               <Button type="submit" size="l">
-                S'inscrire
+                S&#39;inscrire
               </Button>
             </form>
           )}

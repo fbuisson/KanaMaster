@@ -1,7 +1,6 @@
 'use client';
 
 import Button from '@/components/UI/Button';
-import styled from 'styled-components';
 
 export default function Home() {
   return (
