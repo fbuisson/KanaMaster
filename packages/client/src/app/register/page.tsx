@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Button from '@/components/UI/Button';
-import styled from 'styled-components';
 import { apiClient } from '@/utils/apiClient';
 
 export default function Register() {
@@ -79,15 +78,22 @@ export default function Register() {
 
   return (
     <main>
-      <S.Container>
-        <S.FormWrapper>
-          <h1>Inscription</h1>
+      <div
+        className="flex justify-center align-center"
+        style={{ minHeight: '100vh', padding: '2rem' }}
+      >
+        <div className="formWrapper">
+          <h1 className="text-center">Inscription</h1>
           {successMessage ? (
-            <p style={{ textAlign: 'center' }}>{successMessage}</p>
+            <p className="text-center">{successMessage}</p>
           ) : (
-            <S.Form onSubmit={handleSubmit}>
-              <S.FormGroup>
-                <label htmlFor="username">Nom d&#39;utilisateur</label>
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-column"
+              style={{ gap: '1.5rem' }}
+            >
+              <div className="flex flex-column" style={{ gap: '0.5rem' }}>
+                <label htmlFor="username">Nom d'utilisateur</label>
                 <input
                   type="text"
                   id="username"
@@ -96,11 +102,11 @@ export default function Register() {
                   onChange={handleChange}
                 />
                 {errors.username && (
-                  <S.ErrorMessage>{errors.username}</S.ErrorMessage>
+                  <p className="message-error">{errors.username}</p>
                 )}
-              </S.FormGroup>
+              </div>
 
-              <S.FormGroup>
+              <div className="flex flex-column" style={{ gap: '0.5rem' }}>
                 <label htmlFor="email">Email</label>
                 <input
                   type="email"
@@ -110,11 +116,11 @@ export default function Register() {
                   onChange={handleChange}
                 />
                 {errors.email && (
-                  <S.ErrorMessage>{errors.email}</S.ErrorMessage>
+                  <p className="message-error">{errors.email}</p>
                 )}
-              </S.FormGroup>
+              </div>
 
-              <S.FormGroup>
+              <div className="flex flex-column" style={{ gap: '0.5rem' }}>
                 <label htmlFor="password">Mot de passe</label>
                 <input
                   type="password"
@@ -124,54 +130,17 @@ export default function Register() {
                   onChange={handleChange}
                 />
                 {errors.password && (
-                  <S.ErrorMessage>{errors.password}</S.ErrorMessage>
+                  <p className="message-error">{errors.password}</p>
                 )}
-              </S.FormGroup>
+              </div>
 
               <Button type="submit" size="l">
-                S&#39;inscrire
+                S'inscrire
               </Button>
-            </S.Form>
+            </form>
           )}
-        </S.FormWrapper>
-      </S.Container>
+        </div>
+      </div>
     </main>
   );
 }
-
-const S = {
-  Container: styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 2rem;
-  `,
-  FormWrapper: styled.div`
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-  `,
-  Form: styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  `,
-  FormGroup: styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  `,
-  ErrorMessage: styled.span`
-    color: red;
-    font-size: 0.875rem;
-  `,
-};

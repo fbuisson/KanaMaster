@@ -8,6 +8,21 @@ $secondary: #ffeed0;
 $text: #333333;
 $red-background: #e33c3b;
 
+$button-sizes: (
+  m: (
+    padding: 0.5rem 1rem,
+    font-size: 1rem,
+  ),
+  l: (
+    padding: 0.75rem 1.25rem,
+    font-size: 1.2rem,
+  ),
+  xl: (
+    padding: 1rem 1.5rem,
+    font-size: 1.5rem,
+  ),
+);
+
 :root {
   --font-noto-sans-jp: 'Noto Sans JP', sans-serif; // Ajout si nécessaire pour font-family
 }
@@ -34,6 +49,7 @@ body {
 
 * {
   box-sizing: border-box;
+  font-family: var(--font-noto-sans-jp), sans-serif;
   padding: 0;
   margin: 0;
 }
@@ -47,26 +63,42 @@ a {
   }
 }
 
-button {
+.button {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
   border-radius: 999px;
   border: none;
+  cursor: pointer;
+  background-color: $red-background;
+  color: #fff;
   box-shadow: 4px 3px 0px 0px #a42221;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 
-  &:active {
-    transform: translate(4px, 3px) !important;
-    box-shadow: 0px 0px 0px 0px #a42221 !important;
-  }
-
   &:hover {
     transform: translate(2px, 1px);
     box-shadow: 2px 1px 0px 0px #a42221;
+  }
+
+  &:active {
+    transform: translate(4px, 3px);
+    box-shadow: 0px 0px 0px 0px #a42221;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // Styles pour chaque taille
+  @each $size, $props in $button-sizes {
+    &.#{$size} {
+      padding: map-get($props, padding);
+      font-size: map-get($props, font-size);
+    }
   }
 }
 
@@ -137,6 +169,58 @@ nav {
   > div:first-of-type a:first-of-type {
     display: block !important;
   }
+
+  .navbar-links {
+    display: flex;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+footer {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  background-color: $primary;
+  color: $secondary;
+
+  > img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 300px;
+
+    h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
 }
 
 .ellipse {
@@ -179,16 +263,24 @@ nav {
   flex-wrap: wrap;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .justify-center {
   justify-content: center;
 }
 
 .align-center {
   align-items: center;
-}
-
-.flex-column {
-  flex-direction: column;
 }
 
 .mx-auto {
@@ -281,6 +373,20 @@ input[type='file']::file-selector-button:hover {
 
 // FORMS
 
+.formWrapper {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
 label {
   font-weight: 600;
 }
@@ -320,9 +426,53 @@ progress {
 .message-success {
   color: green;
   font-weight: 600;
+  font-size: 0.875rem;
 }
 
+.message-error {
+  color: red;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
 // PAGES
+
+.hero {
+  position: relative;
+  top: 0;
+  left: 50%;
+  min-height: 100vh;
+  margin-top: -160px;
+  width: 100%;
+  background:
+    linear-gradient(180deg, rgba(255, 169, 102, 0.01) 58.06%, #ffeed0 99.87%),
+    url('/home/hero.png') lightgray -1px -56.979px / 101.886% 129.592% no-repeat;
+  background-size: cover;
+  background-position: top;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  transform: translateX(-50%);
+
+  @media (max-width: 768px) {
+    background:
+      linear-gradient(180deg, rgba(255, 169, 102, 0.01) 58.06%, #ffeed0 99.87%),
+      url('/home/hero_mobile.png') lightgray -1px -56.979px / 101.886% 129.592%
+        no-repeat;
+
+    > div:first-of-type {
+      display: none;
+    }
+  }
+}
+
+.home-benefit {
+  @media (max-width: 768px) {
+    p {
+      text-align: center;
+    }
+  }
+}
 
 .quiz-main {
   @include mixins.flex-center(0, center, center, column);

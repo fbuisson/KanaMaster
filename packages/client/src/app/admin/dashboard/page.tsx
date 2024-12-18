@@ -132,118 +132,110 @@ export default function AdminPage() {
 
   return (
     <main>
-      <S.Container>
-        <h1>Administration</h1>
-        <div className="spaces-block">
-          <div className="flex">
-            <h2>Utilisateurs</h2>
-            <Button onClick={refreshUsers}>Rafraîchir</Button>
-          </div>
-          <div className="flex spaces-block">
-            {users.map((user) => (
-              <UserCard key={`${user._id}-${refreshU}`} user={user} />
-            ))}
-          </div>
+      <h1>Administration</h1>
+      <div className="spaces-block">
+        <div className="flex">
+          <h2>Utilisateurs</h2>
+          <Button onClick={refreshUsers}>Rafraîchir</Button>
         </div>
-        <div className="spaces-block">
-          <div className="flex">
-            <h2>Caractères</h2>
-            <Button onClick={refreshCharacters}>Rafraîchir</Button>
-            <Button onClick={toggleCharacterForm}>Ajouter un Caractère</Button>
-          </div>
-          {showCharacterForm && (
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder="Symbole"
-                value={symbol}
-                onChange={(e) => setSymbol(e.target.value)}
-                required
-              />
-              <select
-                value={selectedCharacterType}
-                onChange={(e) =>
-                  setSelectedCharacterType(e.target.value as CharacterType)
-                }
-                required
-              >
-                <option value="">--- Sélectionnez un type ---</option>
-                {Object.values(CharacterType).map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={selectedVowel || ''}
-                onChange={(e) => setSelectedVowel(e.target.value as Vowel)}
-              >
-                {Object.values(Vowel).map((vowel) => (
-                  <option key={vowel} value={vowel}>
-                    {vowel}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={selectedConsonant || ''}
-                onChange={(e) =>
-                  setSelectedConsonant(e.target.value as Consonant)
-                }
-              >
-                {Object.values(Consonant).map((consonant) => (
-                  <option key={consonant} value={consonant}>
-                    {consonant}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                placeholder="Prononciation Japonaise"
-                value={japanesePronunciation}
-                onChange={(e) => setJapanesePronunciation(e.target.value)}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Traduction"
-                value={translation}
-                onChange={(e) => setTranslation(e.target.value)}
-                required
-              />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleMediaChange}
-                required
-              />
-              <Button type="submit">Sauvegarder</Button>
-            </form>
-          )}
-          <div className="flex spaces-block">
-            {characters.map((character) => (
-              <CharacterCard
-                key={`${character._id}-${refreshK}`}
-                character={character}
-                refresh={refreshCharacters}
-              />
-            ))}
-          </div>
+        <div className="flex spaces-block">
+          {users.map((user) => (
+            <UserCard key={`${user._id}-${refreshU}`} user={user} />
+          ))}
         </div>
-        <div className="spaces-block">
-          <div className="flex">
-            <h2>Badges</h2>
-            {/* <Button onClick={refreshBadges}>Rafraîchir</Button> */}
-            <Button onClick={toggleBadgeForm}>Ajouter un Badge</Button>
-          </div>
-          {showBadgeForm && <BadgeForm />}
+      </div>
+      <div className="spaces-block">
+        <div className="flex">
+          <h2>Caractères</h2>
+          <Button onClick={refreshCharacters}>Rafraîchir</Button>
+          <Button onClick={toggleCharacterForm}>Ajouter un Caractère</Button>
         </div>
-      </S.Container>
+        {showCharacterForm && (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Symbole"
+              value={symbol}
+              onChange={(e) => setSymbol(e.target.value)}
+              required
+            />
+            <select
+              value={selectedCharacterType}
+              onChange={(e) =>
+                setSelectedCharacterType(e.target.value as CharacterType)
+              }
+              required
+            >
+              <option value="">--- Sélectionnez un type ---</option>
+              {Object.values(CharacterType).map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            <select
+              value={selectedVowel || ''}
+              onChange={(e) => setSelectedVowel(e.target.value as Vowel)}
+            >
+              {Object.values(Vowel).map((vowel) => (
+                <option key={vowel} value={vowel}>
+                  {vowel}
+                </option>
+              ))}
+            </select>
+            <select
+              value={selectedConsonant || ''}
+              onChange={(e) =>
+                setSelectedConsonant(e.target.value as Consonant)
+              }
+            >
+              {Object.values(Consonant).map((consonant) => (
+                <option key={consonant} value={consonant}>
+                  {consonant}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              placeholder="Prononciation Japonaise"
+              value={japanesePronunciation}
+              onChange={(e) => setJapanesePronunciation(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Traduction"
+              value={translation}
+              onChange={(e) => setTranslation(e.target.value)}
+              required
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleMediaChange}
+              required
+            />
+            <Button type="submit">Sauvegarder</Button>
+          </form>
+        )}
+        <div className="flex spaces-block">
+          {characters.map((character) => (
+            <CharacterCard
+              key={`${character._id}-${refreshK}`}
+              character={character}
+              refresh={refreshCharacters}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="spaces-block">
+        <div className="flex">
+          <h2>Badges</h2>
+          {/* <Button onClick={refreshBadges}>Rafraîchir</Button> */}
+          <Button onClick={toggleBadgeForm}>Ajouter un Badge</Button>
+        </div>
+        {showBadgeForm && <BadgeForm />}
+      </div>
     </main>
   );
 }
-
-const S = {
-  Container: styled.div`
-    padding: 2rem;
-  `,
-};

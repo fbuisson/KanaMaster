@@ -3,7 +3,6 @@
 import { Noto_Sans_JP } from 'next/font/google';
 import './globals.scss';
 import Navbar from '@/components/layout/Navbar';
-import ThemeWrapper from '@/components/layout/ThemeWrapper';
 import { AuthProvider } from '@/contexts/AuthContext';
 import Footer from '@/components/layout/Footer';
 
@@ -23,11 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${notoSansJP.variable}`}>
         <AuthProvider>
-          <ThemeWrapper>
-            <Navbar />
-            {children}
-            <Footer />
-          </ThemeWrapper>
+          <Navbar />
+          {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>

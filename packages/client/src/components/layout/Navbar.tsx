@@ -65,7 +65,7 @@ export default function Navbar() {
           />
         </S.Hamburger>
       </div>
-      <S.NavLinks className="flex align-center">
+      <div className="navbar-links flex align-center">
         {isLoggedIn && role ? (
           <>
             <Link
@@ -98,7 +98,7 @@ export default function Navbar() {
             </Button>
           </>
         )}
-      </S.NavLinks>
+      </div>
       <S.Menu open={menuOpen}>
         <Button onClick={() => setMenuOpen(false)} size="l">
           X
@@ -141,14 +141,6 @@ export default function Navbar() {
 }
 
 const S = {
-  NavLinks: styled.div`
-    display: flex;
-
-    @media (max-width: 768px) {
-      display: none;
-    }
-  `,
-
   Hamburger: styled.div`
     display: none;
     cursor: pointer;
