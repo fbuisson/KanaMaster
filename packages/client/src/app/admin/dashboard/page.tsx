@@ -41,6 +41,8 @@ export default function AdminPage() {
   //const [badges, setBadges] = useState<Badge[]>([]);
 
   useEffect(() => {
+    console.log('isLoggedIn', isLoggedIn);
+    console.log('role', role);
     if (!isLoggedIn || (isLoggedIn && role !== 'admin')) {
       router.push('/');
     }
