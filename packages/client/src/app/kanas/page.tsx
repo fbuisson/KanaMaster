@@ -11,9 +11,9 @@ const KanasPage = () => {
         <div>
           <h2 className="text-center">Hiragana</h2>
           <p>
-            Le hiragana est l'un des deux syllabaires utilisés dans la langue
-            japonaise. Il est principalement utilisé pour écrire les mots
-            d'origine japonaise et les particules grammaticales. Chaque
+            Le hiragana est l&#39;un des deux syllabaires utilisés dans la
+            langue japonaise. Il est principalement utilisé pour écrire les mots
+            d&#39;origine japonaise et les particules grammaticales. Chaque
             caractère représente une syllabe.
           </p>
         </div>
@@ -25,7 +25,7 @@ const KanasPage = () => {
           <h2 className="text-center">Katakana</h2>
           <p>
             Le katakana est le second syllabaire japonais. Il est souvent
-            utilisé pour transcrire les mots d'origine étrangère, les noms
+            utilisé pour transcrire les mots d&#39;origine étrangère, les noms
             scientifiques, et pour mettre en valeur certains mots. Comme le
             hiragana, chaque caractère représente une syllabe.
           </p>

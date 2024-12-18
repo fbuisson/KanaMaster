@@ -6,7 +6,7 @@ import { apiClient } from '@/utils/apiClient';
 import { API_URL } from '@/utils/config';
 import Button from '@/components/UI/Button';
 import ProgresssionCard from '@/components/UI/profile/ProgresssionCard';
-import { UserBadge } from '@/types/types';
+import { Progression, UserBadge } from '@/types/types';
 import BadgeCard from '@/components/UI/BadgeCard';
 
 const ProfilePage: React.FC = () => {
@@ -16,7 +16,7 @@ const ProfilePage: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string | null>(null);
-  const [progression, setProgression] = useState<any[]>([]);
+  const [progression, setProgression] = useState<Progression[]>([]);
   const [userBadges, setUserBadges] = useState<UserBadge[]>([]);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const ProfilePage: React.FC = () => {
           `/progression/${userId}`
         );
         if (responseProgression.status === 200) {
+          console.log(responseProgression.data.data);
           setProgression(responseProgression.data.data);
         }
 

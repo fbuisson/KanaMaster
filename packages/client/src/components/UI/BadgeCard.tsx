@@ -22,7 +22,7 @@ export default function BadgeCard({ userBadge }: BadgeCardProps) {
       <h3>{userBadge.badge.title}</h3>
       <p>{userBadge.badge.description}</p>
       <p>
-        Date d'obtention:{' '}
+        Date d&#39;obtention:{' '}
         {new Date(userBadge.date_awarded).toLocaleDateString()}
       </p>
     </div>

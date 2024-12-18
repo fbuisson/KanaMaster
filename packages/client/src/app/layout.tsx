@@ -1,6 +1,5 @@
 'use client';
 
-import type { Metadata } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import './globals.scss';
 import Navbar from '@/components/layout/Navbar';

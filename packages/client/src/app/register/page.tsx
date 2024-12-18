@@ -87,7 +87,7 @@ export default function Register() {
           ) : (
             <S.Form onSubmit={handleSubmit}>
               <S.FormGroup>
-                <label htmlFor="username">Nom d'utilisateur</label>
+                <label htmlFor="username">Nom d&#39;utilisateur</label>
                 <input
                   type="text"
                   id="username"
@@ -129,7 +129,7 @@ export default function Register() {
               </S.FormGroup>
 
               <Button type="submit" size="l">
-                S'inscrire
+                S&#39;inscrire
               </Button>
             </S.Form>
           )}

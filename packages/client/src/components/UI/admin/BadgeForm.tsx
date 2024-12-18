@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Button from '@/components/UI/Button';
-import { BadgeType, CharacterType } from '@/types/types';
+import { BadgeType } from '@/types/types';
 import { apiClient } from '@/utils/apiClient';
 
 const BadgeForm: React.FC = () => {
@@ -39,7 +39,7 @@ const BadgeForm: React.FC = () => {
     formData.append('number', badgeNumber.toString());
 
     try {
-      const response = await apiClient.post('/badge', formData, {
+      await apiClient.post('/badge', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -102,7 +102,7 @@ const BadgeForm: React.FC = () => {
           required
           style={{ paddingRight: '20px' }}
         />
-        <label htmlFor="attempts">Nombre d'essais</label>
+        <label htmlFor="attempts">Nombre d&#39;essais</label>
         <input
           id="attempts"
           type="number"

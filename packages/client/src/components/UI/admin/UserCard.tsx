@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { User, Role } from '@/types/types';
 import { apiClient } from '@/utils/apiClient';
 import Button from '@/components/UI/Button';
-import styled from 'styled-components';
 
 interface UserCardProps {
   user: User;
@@ -20,6 +19,7 @@ export default function UserCard({ user }: UserCardProps) {
       setMessage('Le rôle a été modifié avec succès');
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
+      console.error(error);
       setMessage('La modification du rôle a échoué');
       setTimeout(() => setMessage(null), 3000);
     }

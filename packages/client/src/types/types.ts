@@ -79,3 +79,12 @@ export interface UserBadge {
   badge: Badge;
   date_awarded: Date;
 }
+
+export interface Progression {
+  attempts: number;
+  character: Character;
+  character_type: CharacterType;
+  correct_attempts: number;
+  user_id: string;
+  _id: string;
+}

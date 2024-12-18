@@ -7,7 +7,7 @@ import styled from 'styled-components';
 interface props {
   size?: 'm' | 'l' | 'xl';
   children: React.ReactNode;
-  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => any;
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
   link?: string;
   disabled?: boolean;
   className?: string;

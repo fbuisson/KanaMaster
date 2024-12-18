@@ -39,8 +39,8 @@ export default function AdminPage() {
     useState<string>('');
   const [translation, setTranslation] = useState<string>('');
   const [showBadgeForm, setShowBadgeForm] = useState(false);
-  const [refreshB, setRefreshB] = useState(0);
-  const [badges, setBadges] = useState<Badge[]>([]);
+  // const [refreshB, setRefreshB] = useState(0);
+  //const [badges, setBadges] = useState<Badge[]>([]);
 
   if (role !== 'admin') {
     router.push('/');
@@ -54,9 +54,9 @@ export default function AdminPage() {
     fetchCharacters();
   }, [refreshK]);
 
-  useEffect(() => {
-    fetchBadges();
-  }, [refreshB]);
+  // useEffect(() => {
+  //   fetchBadges();
+  // }, [refreshB]);
 
   const fetchUsers = async () => {
     const response = await apiClient.get('/user/list');
@@ -68,10 +68,10 @@ export default function AdminPage() {
     setCharacters(response.data.data);
   };
 
-  const fetchBadges = async () => {
-    const response = await apiClient.get('/badge');
-    setBadges(response.data.data);
-  };
+  // const fetchBadges = async () => {
+  //   const response = await apiClient.get('/badge');
+  //   setBadges(response.data.data);
+  // };
 
   const refreshUsers = () => {
     setRefreshU((prev) => prev + 1);
@@ -81,9 +81,9 @@ export default function AdminPage() {
     setRefreshK((prev) => prev + 1);
   };
 
-  const refreshBadges = () => {
-    setRefreshB((prev) => prev + 1);
-  };
+  // const refreshBadges = () => {
+  //   setRefreshB((prev) => prev + 1);
+  // };
 
   const toggleCharacterForm = () => {
     setShowCharacterForm((prev) => !prev);
@@ -233,7 +233,7 @@ export default function AdminPage() {
         <div className="spaces-block">
           <div className="flex">
             <h2>Badges</h2>
-            <Button onClick={refreshBadges}>Rafraîchir</Button>
+            {/* <Button onClick={refreshBadges}>Rafraîchir</Button> */}
             <Button onClick={toggleBadgeForm}>Ajouter un Badge</Button>
           </div>
           {showBadgeForm && <BadgeForm />}

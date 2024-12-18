@@ -58,8 +58,8 @@ export default function Home() {
         <div className="spaces-block banner">
           <h2>Prêt à maîtriser les hiraganas et les katakanas ?</h2>
           <p>
-            Rejoignez KanaMaster dès aujourd'hui et commencez votre voyage
-            d'apprentissage !
+            Rejoignez KanaMaster dès aujourd&#39;hui et commencez votre voyage
+            d&#39;apprentissage !
           </p>
           <Button size="xl" link="/register">
             Commencer

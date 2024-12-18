@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Character, CharacterType, Vowel, Consonant } from '@/types/types';
 import { apiClient } from '@/utils/apiClient';
 import Button from '@/components/UI/Button';
-import styled from 'styled-components';
 import { API_URL } from '@/utils/config';
 
 interface CharacterCardProps {
@@ -45,8 +44,8 @@ export default function CharacterCard({
     const formData = new FormData();
     formData.append('symbol', editedCharacter.symbol);
     formData.append('type', editedCharacter.type);
-    editedCharacter.vowel && formData.append('vowel', editedCharacter.vowel);
-    editedCharacter.consonant &&
+    if (editedCharacter.vowel) formData.append('vowel', editedCharacter.vowel);
+    if (editedCharacter.consonant)
       formData.append('consonant', editedCharacter.consonant);
     formData.append(
       'japanese_pronunciation',
@@ -68,6 +67,7 @@ export default function CharacterCard({
       setTimeout(() => setMessage(null), 3000);
       refresh();
     } catch (error) {
+      console.error(error);
       setMessage('La modification du caractère a échoué');
       setTimeout(() => setMessage(null), 3000);
     }

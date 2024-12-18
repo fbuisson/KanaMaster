@@ -29,7 +29,7 @@ const QuizPage = () => {
       const response = await apiClient.post(`/user/badges/${userId}`);
       setCount(response.data.count);
     };
-    userId && fetchBadges();
+    if (userId) fetchBadges();
   }, [userId]);
 
   useEffect(() => {
