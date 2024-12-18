@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: '*', // Autorise uniquement les requêtes depuis ce domaine
+    origin: 'https://kana-master-cyjua9j14-fbuissons-projects.vercel.app', // Autorise uniquement les requêtes depuis ce domaine
     credentials: true, // Permet d'envoyer les cookies avec les requêtes
   })
 );
