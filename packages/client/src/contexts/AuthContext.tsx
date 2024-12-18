@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUser = async () => {
     try {
+      console.log('fetchUser');
       await apiClient.post(
         '/auth/refresh-token',
         {},
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <AuthContext.Provider
