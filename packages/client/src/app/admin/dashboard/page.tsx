@@ -8,7 +8,6 @@ import {
   CharacterType,
   Vowel,
   Consonant,
-  Badge,
 } from '@/types/types';
 import styled from 'styled-components';
 import UserCard from '@/components/UI/admin/UserCard';
@@ -120,7 +119,7 @@ export default function AdminPage() {
     formData.append('translation', translation || '');
 
     try {
-      const response = await apiClient.post('/character/add', formData, {
+      await apiClient.post('/character/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
