@@ -10,12 +10,14 @@ export function middleware(req: NextRequest) {
   // Check if path starts with /admin
   if (path.startsWith('/admin')) {
     if (!token) {
+      console.log('Redirected to home');
       return NextResponse.redirect(new URL('/', req.url));
     }
   }
 
   if (path.startsWith('/login') || path.startsWith('/register')) {
     if (token) {
+      console.log('Redirected to home');
       return NextResponse.redirect(new URL('/', req.url));
     }
   }
