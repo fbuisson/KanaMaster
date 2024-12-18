@@ -4,6 +4,15 @@ import User from '../models/User';
 import jwt from 'jsonwebtoken';
 import { APIResponse } from '../utils/response'; // Import de la fonction utilitaire
 
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET non configuré');
+}
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+if (!JWT_REFRESH_SECRET) {
+  throw new Error('JWT_REFRESH_SECRET non configuré');
+}
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
@@ -52,7 +61,7 @@ export const login = async (req: Request, res: Response) => {
     // Génère les tokens JWT
     const accessToken = jwt.sign(
       { id: user._id, role: user.role },
-      process.env.JWT_SECRET || 'secret',
+      JWT_SECRET,
       {
         expiresIn: '15m', // Durée de vie du token d'accès
       }
@@ -60,7 +69,7 @@ export const login = async (req: Request, res: Response) => {
 
     const refreshToken = jwt.sign(
       { id: user._id, role: user.role },
-      process.env.JWT_REFRESH_SECRET || 'refreshSecret',
+      JWT_REFRESH_SECRET,
       {
         expiresIn: '7d', // Durée de vie du token de rafraîchissement
       }
@@ -122,7 +131,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // Vérifie et décode le refresh token
     const decoded = jwt.verify(
       refreshToken,
-      process.env.JWT_REFRESH_SECRET || 'refreshSecret'
+      JWT_REFRESH_SECRET
     ) as jwt.JwtPayload;
 
     // Vérifie si l'utilisateur existe
@@ -134,7 +143,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // Génère un nouveau token d'accès
     const newAccessToken = jwt.sign(
       { id: user._id, role: user.role },
-      process.env.JWT_SECRET || 'secret',
+      JWT_SECRET,
       {
         expiresIn: '15m',
       }
