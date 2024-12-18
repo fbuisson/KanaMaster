@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUser = async () => {
     try {
-      console.log('fetchUser');
+      console.log('fetchUser called');
       await apiClient.post(
         '/auth/refresh-token',
         {},
@@ -36,15 +36,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       const response = await apiClient.get('/auth/me');
       if (response.status === 200) {
+        console.log('User fetched:', response.data.data);
         setIsLoggedIn(true);
         setUserId(response.data.data._id);
         setRole(response.data.data.role);
         setMedia(response.data.data.media);
       }
     } catch (error) {
-      console.error(error);
+      console.error('fetchUser error:', error);
     }
   };
+
+  useEffect(() => {
+    console.log('AuthProvider mounted');
+  }, []);
 
   useEffect(() => {
     fetchUser();
