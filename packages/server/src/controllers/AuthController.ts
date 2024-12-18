@@ -78,14 +78,14 @@ export const login = async (req: Request, res: Response) => {
     // Définit les cookies pour les tokens
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',,
       secure: NODE_ENV === 'production',
       maxAge: 15 * 60 * 1000, // 15 minutes en millisecondes
     });
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',,
       secure: NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours en millisecondes
     });
@@ -103,13 +103,13 @@ export const logout = (req: Request, res: Response) => {
     // Supprime les cookies en définissant une date d'expiration passée
     res.clearCookie('accessToken', {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',,
       secure: NODE_ENV === 'production',
     });
 
     res.clearCookie('refreshToken', {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',,
       secure: NODE_ENV === 'production',
     });
 
@@ -152,7 +152,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // Définit le cookie pour le nouveau token d'accès
     res.cookie('accessToken', newAccessToken, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',,
       secure: NODE_ENV === 'production',
       maxAge: 15 * 60 * 1000, // 15 minutes en millisecondes
     });
