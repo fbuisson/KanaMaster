@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import BadgeForm from '@/components/UI/admin/BadgeForm';
 
 export default function AdminPage() {
-  const { role } = useAuth();
+  const { role, isLoggedIn } = useAuth();
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -40,9 +40,11 @@ export default function AdminPage() {
   // const [refreshB, setRefreshB] = useState(0);
   //const [badges, setBadges] = useState<Badge[]>([]);
 
-  if (role !== 'admin') {
-    router.push('/');
-  }
+  useEffect(() => {
+    if (!isLoggedIn || (isLoggedIn && role !== 'admin')) {
+      router.push('/');
+    }
+  }, [isLoggedIn, role]);
 
   useEffect(() => {
     fetchUsers();

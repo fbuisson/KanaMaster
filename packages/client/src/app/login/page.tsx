@@ -1,15 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/UI/Button';
 import { apiClient } from '@/utils/apiClient';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Login() {
-  const { setIsLoggedIn, fetchUser } = useAuth();
-
   const router = useRouter();
+  const { setIsLoggedIn, isLoggedIn, fetchUser } = useAuth();
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -20,6 +19,12 @@ export default function Login() {
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push('/');
+    }
+  }, [isLoggedIn]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
